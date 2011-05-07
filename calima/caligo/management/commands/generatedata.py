@@ -5,12 +5,17 @@ from cliente import Calima
 from caligo.models import Station, Province, DailyReport
 
 class Command(BaseCommand):
-    args = '<directorio>'
+    # args es path al directorio con los ficheros anuales
+    args = '<directorio> <anho1> <anho2>'
     help = 'Importa los datos de un directorio a la db'
 
     def handle(self, *args, **options):
         calima = Calima(path=args[0])
-        calima.generarDatosAnual(2009)
+        ## Specify the year
+        if len(args) > 1:
+            calima.generarDatosAnual(map(int, args[1:]))
+        else:
+            calima.generarDatosAnual()
         for estacion in calima.estaciones.values():
             province, created = Province.objects.get_or_create(
                     name=unicode(estacion.provincia,
@@ -31,9 +36,6 @@ class Command(BaseCommand):
 
             for key in estacion.valores:
                 datos = estacion.valores[key]
-             #   for dat in datos:
-             #       print dat, datos[dat]
-             #   print "======="
                 daily = DailyReport(date=key,
                         station=station,
                         max_t          = datos['t_max'][0],
@@ -55,8 +57,9 @@ class Command(BaseCommand):
                         imp_prec      = datos['prec'] == 'Ip' and True or False,
                 )
                 daily.save()
-                #TODO
-#                        impc_prec      = datos[''],
-#                        var_w_dir      = datos['t_med'])
+                # TODO
+                # si el viento es 99 no he hecho nada.. habra que actualizar
+                # campo
+                # con Varias el valor queda Nulo, supongo que es correcto
 
 

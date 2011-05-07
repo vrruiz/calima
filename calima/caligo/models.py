@@ -25,7 +25,7 @@ class Station(models.Model):
     longitude = models.FloatField(blank=True, null=True, editable=False)
 
     def __unicode__(self):
-        return self.name
+        return "%s: %s" % (self.code, self.name)
 
 
 class DailyReport(models.Model):

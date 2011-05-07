@@ -14,6 +14,11 @@ logger.addHandler(hdlr)
 
 class Calima(object):
     def __init__(self, ftp=FTP, path='./'):
+        """
+            Genera la estructura Estaciones desde el directorio  datos
+            descargados
+
+        """
         self.ftp = ftp
         self.path = path
         self.estaciones = {}
@@ -36,7 +41,7 @@ class Calima(object):
             raise Exception("Identificacion de estacion invalido")
             return
 
-        # old: valores_diarios/estacion/
+        # XXX Funciona, pero usarmoe generarDatosAnual
         f = gzip.open(os.path.join(self.path, 'valores_diarios/estacion/%s.CSV.gz' % estacionId))
         self.estaciones[estacionId].cargarDiarios(csv.reader(f.readlines()[1:],
                 delimiter=';'))
@@ -56,6 +61,7 @@ class Calima(object):
         if not self.estaciones:
             self.generarEstaciones()
 
+        logger.info("Extrayendo datos de %d" % year)
         try:
             f = gzip.open(os.path.join(self.path, '%d.CSV.gz' % year))
         except:
@@ -67,9 +73,9 @@ class Calima(object):
         f.close()
 
     def generarDatosAnual(self, year=None):
-        """ Generar datos dado un anho (year)
+        """ Generar datos dado un ano (year)
 
-            year: integer o iterable, cargar valores para ese dia
+            year: integer o iterable de integers, cargar valores para ese dia
                 en caso de ser None, carga todos los valores para los 
                 ficheros datos
         """
@@ -77,7 +83,7 @@ class Calima(object):
             for file in glob.glob(os.path.join(self.path,'????.CSV.gz')):
                 year = re.search('(?P<year>\d\d\d\d).CSV.gz',
                         file).groupdict()['year']
-                self._importarAnual(year)
+                self._importarAnual(int(year))
             return
 
         try:
@@ -89,7 +95,7 @@ class Calima(object):
                 self._importarAnual(year)
 
 
-# TODO Dar valor a Acum
+# TODO Dar valor a Acum si queremos que quede reflejado db
 ESPECIALES = {'Ip': 'Ip', 'Acum': None, 'Varias': None, '': None}
 
 def exceptionEspeciales(f):
