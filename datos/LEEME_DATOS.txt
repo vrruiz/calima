@@ -1,0 +1,38 @@
+     RESUMEN DIARIO DE DATOS DE ESTACIONES PRINCIPALES                        
+     =================================================                        
+
+Los campos incluídos en estos ficheros son los siguientes:
+
+      Indicativo: Indicativo climatológico de la estación
+      Nombre: Nombre de la estación
+      Provincia: Provincia
+      Altitud: Altitud de la estación, en metros
+      Año: Año
+      Mes: Mes
+      Dia: Día
+      T.Max: Temperatura máxima diaria, en grados centígrados
+      Hora: Hora de la temperatura máxima (en formato hh:mm)
+      T.Min: Temperatura mínima diaria, en grados centígrados
+      Hora: Hora de la temperatura mínima (en formato hh:mm)
+      T.Med: Temperatura media diaria, en grados centígrados
+      Racha: Racha máxima del viento, en m/sg
+      Dir: Dirección del viento, en decenas de grado
+      Hora: Hora de la racha máxima (en formato hh:mm)
+      Vel.media: Velocidad media del viento, en m/sg
+      Prec.: Precipitación diaria, en milímetros
+      Sol: Duración de la insolación, en horas
+      Pres.máx: Presión máxima diaria, en hPa
+      Hora: Hora de la presión máxima, redondeada a la hora entera más próxima
+      Pres.min: Presión mínima diaria, en hPa
+      Hora: Hora de la presión mínima, redondeada a la hora entera más próxima
+  
+  Valores especiales:
+      Hora de ocurrencia de un valor extremo:
+           Varias: El valor extremo se repite varias veces a lo largo del día, o el valor extremo
+                   se ha mantenido estacionario durante más de una hora.
+      Precipitación: 
+           Ip: Precipitación inapreciable (inferior a 1 décima de mm)
+           Acum: Precipitación acumulada
+      Dirección del viento:
+           99: Dirección variable
+                
