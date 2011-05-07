@@ -17,8 +17,6 @@ Para instalar calima son necesarios los siguientes programas.
 
 4. Descarga de datos
 
-  $ python 01-descarga.py
-
-Esta orden crea el directorio datos/ conteniendo las series
-climatológicas.
-
+  $ cd /data
+  $ ./01-download.py
+  $ ./02-import.sh

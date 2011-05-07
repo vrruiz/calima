@@ -1,8 +1,13 @@
+# -*- coding: utf-8 -*-
+##
+## calima - Importa los datos en bruto a la base de datos
+##
+## $ python manage.py importer <directorio> <año 1> <año 2> ...
+##
+
 from django.core.management.base import BaseCommand, CommandError
-
-from cliente import Calima
-
 from caligo.models import Station, Province, DailyReport
+from parser import Calima
 
 class Command(BaseCommand):
     # args es path al directorio con los ficheros anuales

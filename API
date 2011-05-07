@@ -6,6 +6,9 @@ p.e.:
   /estacion/<codigo>/xml
   /estacion/<codigo>/json
 
+- calima.estaciones
+  /api/stations/
+
 - calima.estacion.datos
   /estacion/<codigo>/
 

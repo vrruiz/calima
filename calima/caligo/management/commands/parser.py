@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
+##
+## calima - Procesador de datos en bruto a clases Python
+## 
+
 from ftplib import FTP
-import os, datetime
-import glob, gzip, csv
-import re
-import sys
+import sys, os, datetime
+import re, glob, gzip, csv
 from decimal import Decimal, InvalidOperation
 
 FTP=''
@@ -113,7 +116,7 @@ def exceptionEspeciales(f):
     new_f.__name__ = f.__name__
     return new_f
 
-    
+
 class Estacion(object):
     def __init__(self, id, nombre, provincia, altitud, latitud, longitud):
         self.id = id
@@ -128,6 +131,8 @@ class Estacion(object):
             self.longitud = -1 * int(longitud[:-1])
         else:
             self.longitud = int(longitud[:-1])
+        self.latitud = self.latitud / 100;
+        self.longitud = self.longitud / 100;
         self.valores = {}
 
     def __repr__(self):
