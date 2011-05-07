@@ -1,0 +1,98 @@
+API
+===
+Formatos: XML y JSON
+
+p.e.:
+  /estacion/<codigo>/xml
+  /estacion/<codigo>/json
+
+- calima.estacion.datos
+  /estacion/<codigo>/
+
+- calima.estacion.serie
+  /estacion/<codigo>/serie?ano_ini=1920&ano_fin=2011
+
+- calima.estacion.temperatura.minimo
+  /estacion/<codigo>/temperatura/minimo
+  /estacion/<codigo>/temperatura/minimo?ano=2011
+  /estacion/<codigo>/temperatura/minimo?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/temperatura/minimo?mes=5
+  /estacion/<codigo>/temperatura/minimo?dia=6&mes=5
+
+- calima.estacion.temperatura.maximo
+  /estacion/<codigo>/temperatura/maximo
+  /estacion/<codigo>/temperatura/maximo?ano=2011
+  /estacion/<codigo>/temperatura/maximo?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/temperatura/minimo?mes=05
+  /estacion/<codigo>/temperatura/minimo?dia=06&mes=05
+
+- calima.estacion.temperatura.media
+  /estacion/<codigo>/temperatura/media
+  /estacion/<codigo>/temperatura/media?ano=2011
+  /estacion/<codigo>/temperatura/media?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/temperatura/media?mes=05
+  /estacion/<codigo>/temperatura/media?dia=06&mes=05
+
+- calima.estacion.viento.direccion
+  /estacion/<codigo>/viento/direccion?ano=2011&mes=05&dia=06
+  /estacion/<codigo>/viento/direccion?ano=2011
+  /estacion/<codigo>/viento/direccion?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/viento/direccion?mes=05
+  /estacion/<codigo>/viento/direccion?dia=06&mes=05
+
+- calima.estacion.viento.direccion.media
+  /estacion/<codigo>/viento/direccion/media
+  /estacion/<codigo>/viento/direccion/media?ano=2011
+  /estacion/<codigo>/viento/direccion/media?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/viento/direccion/media?mes=05
+  /estacion/<codigo>/viento/direccion/media?dia=06&mes=05
+
+- calima.estacion.viento.racha
+  /estacion/<codigo>/viento/racha?ano=2011&mes=05&dia=06
+  /estacion/<codigo>/viento/racha?ano=2011
+  /estacion/<codigo>/viento/racha?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/viento/racha?mes=05
+  /estacion/<codigo>/viento/racha?dia=06&mes=05
+
+- calima.estacion.viento.racha.maximo
+  /estacion/<codigo>/viento/racha/maximo
+  /estacion/<codigo>/viento/racha/maximo?ano=2011
+  /estacion/<codigo>/viento/racha/maximo?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/viento/racha/maximo?mes=5
+  /estacion/<codigo>/viento/racha/maximo?dia=6&mes=5
+
+- calima.estacion.viento.racha.minimo
+  /estacion/<codigo>/viento/racha/minimo
+  /estacion/<codigo>/viento/racha/minimo?ano=2011
+  /estacion/<codigo>/viento/racha/minimo?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/viento/racha/minimo?mes=5
+  /estacion/<codigo>/viento/racha/minimo?dia=6&mes=5
+
+- calima.estacion.viento.velocidad_media
+  /estacion/<codigo>/viento/velocidad_media
+  /estacion/<codigo>/viento/velocidad_media?ano=2011
+  /estacion/<codigo>/viento/velocidad_media?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/viento/velocidad_media?mes=05
+  /estacion/<codigo>/viento/velocidad_media?dia=06&mes=05
+
+- calima.estacion.precipitacion_diaria
+  /estacion/<codigo>/precipitacion_diaria
+  /estacion/<codigo>/viento/precipitacion_diaria?ano=2011
+  /estacion/<codigo>/viento/precipitacion_diaria?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/viento/precipitacion_diaria?mes=05
+  /estacion/<codigo>/viento/precipitacion_diaria?dia=06&mes=05
+
+- calima.estacion.precipitacion_diaria.maximo
+  /estacion/<codigo>/precipitacion_diaria/maximo
+  /estacion/<codigo>/precipitacion_diaria/maximo?ano=2011
+  /estacion/<codigo>/precipitacion_diaria/maximo?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/precipitacion_diaria/maximo?mes=5
+  /estacion/<codigo>/precipitacion_diaria/maximo?dia=6&mes=5
+
+- calima.estacion.precipitacion_diaria.minimo
+  /estacion/<codigo>/precipitacion_diaria/minimo
+  /estacion/<codigo>/precipitacion_diaria/minimo?ano=2011
+  /estacion/<codigo>/precipitacion_diaria/minimo?ano_ini=1920&ano_fin=2011
+  /estacion/<codigo>/precipitacion_diaria/minimo?mes=5
+  /estacion/<codigo>/precipitacion_diaria/minimo?dia=6&mes=5
+
