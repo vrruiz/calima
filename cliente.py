@@ -7,6 +7,7 @@ import re
 import datetime
 
 FTP=''
+
 class Calima(object):
     def __init__(self, ftp=FTP, path='./'):
         self.ftp = ftp
@@ -17,8 +18,8 @@ class Calima(object):
         try:
             f = open(os.path.join(self.path, 'maestro.csv'), 'r')
         except IOError:
-            raise("File not found")
-            return {}
+            raise Exception("File not found")
+            return
 
         self.estaciones = {}
         for x in csv.reader(f.readlines()[1:], delimiter=';'):
@@ -28,7 +29,7 @@ class Calima(object):
 
     def _importarEstacion(self, estacionId):
         if not estacionId in self.estaciones:
-            raise("Identificacion de estacion invalido")
+            raise Exception("Identificacion de estacion invalido")
             return
 
         # old: valores_diarios/estacion/
@@ -54,7 +55,7 @@ class Calima(object):
         try:
             f = gzip.open(os.path.join(self.path, '%d.CSV.gz' % year))
         except:
-            raise("No se pueden cargar datos para el anho %s" % year)
+            raise Exception("No se pueden cargar datos para el anho %s" % year)
 
         for dato in csv.reader(f.readlines()[1:], delimiter=';'):
             self.estaciones[dato[0]].cargarParte(dato)
@@ -119,5 +120,6 @@ if __name__ == "__main__":
     print "Numero estaciones ", len(calima.estaciones)
     calima.generarDatosAnual([2009,2010])
     calima.generarDatosAnual(2010)
+    calima.generarDatosAnual(2012)
     #print [calima.getEstacion(x).valores for x in calima.estaciones]
 
