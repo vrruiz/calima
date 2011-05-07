@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from os import path
 
 BASEDIR = path.dirname(path.abspath(__file__))
 
@@ -124,8 +125,7 @@ INSTALLED_APPS = (
 )
 
 FIXTURE_DIRS = (
-    path.join(BASEDIR, 'fixtures', 'pasapures'),
-    path.join(BASEDIR, 'fixtures', 'auth'),
+    path.join(BASEDIR, 'fixtures', 'caligo'),
 )
 
 # A sample logging configuration. The only tangible logging
