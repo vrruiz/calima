@@ -123,16 +123,18 @@ class Estacion(object):
         self.nombre = nombre
         self.provincia = provincia
         self.altitud = int(altitud)
+        # Introduce un punto decimal que no está en la documentación
+        # 410653N 012439W -> 41.0653 -1.2439
+        latitud = latitud[:2] + '.' + latitud[2:]
+        longitud = longitud[:2] + '.' + longitud[2:]
         if latitud[-1] == 'S':
-            self.latitud = -1 * int(latitud[:-1])
+            self.latitud = -1 * Decimal(latitud[:-1])
         else:
-            self.latitud = int(latitud[:-1])
+            self.latitud = Decimal(latitud[:-1])
         if longitud[-1] == 'W':
-            self.longitud = -1 * int(longitud[:-1])
+            self.longitud = -1 * Decimal(longitud[:-1])
         else:
-            self.longitud = int(longitud[:-1])
-        self.latitud = self.latitud / 100;
-        self.longitud = self.longitud / 100;
+            self.longitud = Decimal(longitud[:-1])
         self.valores = {}
 
     def __repr__(self):
@@ -176,14 +178,14 @@ class Estacion(object):
             self.cargarParte(d)
 
 if __name__ == "__main__":
-    calima = Calima(path='datos/')
+    calima = Calima(path='../../../../data/datos/')
     calima.generarEstaciones()
-    print calima.estaciones.keys()
-    print "Numero estaciones ", len(calima.estaciones)
+    #print calima.estaciones.keys()
+    #print "Numero estaciones ", len(calima.estaciones)
     #calima.generarDatosAnual([2009,2010])
-    calima.generarDatosAnual(2009)
+    #calima.generarDatosAnual(2009)
     #calima.generarDatosAnual(2012)
     #print [calima.getEstacion(x).valores for x in calima.estaciones]
-    estacion = calima.estaciones['8500A']
-    print estacion.provincia
+    #estacion = calima.estaciones['8500A']
+    #print estacion.provincia
 
