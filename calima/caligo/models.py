@@ -42,12 +42,21 @@ class DailyReport(models.Model):
         decimal_places=2, blank=True, null=True)
     min_t_time = models.TimeField(verbose_name=_(u'Time of minimum temperature'), blank=True,
     	null=True)
+<<<<<<< HEAD
     avg_t = models.DecimalField(verbose_name=_(u'Average temperature (ºC)'), max_digits=5,
         decimal_places=2, blank=True, null=True)
     squall = models.DecimalField(verbose_name=_(u'Maximum squall (m/s)'), max_digits=5,
         decimal_places=2, blank=True, null=True)
     squall_dir = models.IntegerField(verbose_name=_(u'Direction of maximum squall (degrees*10)'),
     	blank=True, null=True)
+=======
+    avg_t = models.DecimalField(verbose_name=_(u'Average temperature (ºC)'), decimal_places=2,
+    	blank=True, null=True)
+	squall = models.DecimalField(verbose_name=_(u'Maximum squall (m/s)'), decimal_places=2,
+        blank=True, null=True)
+    squall_dir = models.IntegerField(verbose_name=_(u'Direction of maximum squall (degrees*10)'), 
+        blank=True, null=True)
+>>>>>>> 042cabbc98425a0754c794802a5bb21f850a7dd7
     squall_time = models.TimeField(verbose_name=_(u'Time of maximum squall'), blank=True,
     	null=True)
     wind_avg_speed = models.DecimalField(verbose_name=_(u'Average wind speed (m/s)'), max_digits=5,
@@ -65,5 +74,12 @@ class DailyReport(models.Model):
     min_press_time = models.TimeField(verbose_name=_(u'Time of minimum pressure'), blank=True,
         null=True)
 
+<<<<<<< HEAD
     imp_prec = models.BooleanField(verbose_name=_(u'Imperceptible precipitation'))
     var_w_dir = models.BooleanField(verbose_name=_(u'Variable wind direction'))
+=======
+	imp_prec = models.BooleanField(verbose_name=_(u'Imperceptible precipitation'), blank=True,
+    	null=True)
+    var_w_dir = models.BooleanField(verbose_name=_(u'Variable wind direction'), blank=True,
+    	null=True)
+>>>>>>> 042cabbc98425a0754c794802a5bb21f850a7dd7

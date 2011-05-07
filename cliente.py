@@ -1,12 +1,16 @@
-import csv
-import os
 from ftplib import FTP
-import glob
-import gzip
+import os, datetime
+import glob, gzip, csv
 import re
-import datetime
+import sys
 
 FTP=''
+
+import logging
+logger = logging.getLogger('calima')
+hdlr = logging.FileHandler('error.log')
+logger.addHandler(hdlr) 
+
 class Calima(object):
     def __init__(self, ftp=FTP, path='./'):
         self.ftp = ftp
@@ -17,8 +21,8 @@ class Calima(object):
         try:
             f = open(os.path.join(self.path, 'maestro.csv'), 'r')
         except IOError:
-            raise("File not found")
-            return {}
+            raise Exception("File not found")
+            return
 
         self.estaciones = {}
         for x in csv.reader(f.readlines()[1:], delimiter=';'):
@@ -28,7 +32,7 @@ class Calima(object):
 
     def _importarEstacion(self, estacionId):
         if not estacionId in self.estaciones:
-            raise("Identificacion de estacion invalido")
+            raise Exception("Identificacion de estacion invalido")
             return
 
         # old: valores_diarios/estacion/
@@ -54,7 +58,7 @@ class Calima(object):
         try:
             f = gzip.open(os.path.join(self.path, '%d.CSV.gz' % year))
         except:
-            raise("No se pueden cargar datos para el anho %s" % year)
+            raise Exception("No se pueden cargar datos para el anho %s" % year)
 
         for dato in csv.reader(f.readlines()[1:], delimiter=';'):
             self.estaciones[dato[0]].cargarParte(dato)
@@ -84,6 +88,25 @@ class Calima(object):
                 self._importarAnual(year)
 
 
+ESPECIALES = {'Ip': 'Ip', 'Acum': 'Acum', 'Varias': 'Varias', '': None}
+
+def exceptionEspeciales(f):
+    def new_f(value):
+        try:
+            return f(value)
+        except ValueError:
+            # Valores especiales
+            if value in ESPECIALES:
+                return ESPECIALES[value] 
+            else:
+                logger.error('Improper value parsing file %s %s' % (str(value),
+                        str(sys.exc_info())))
+                #raise Exception('Error parsing line')
+                return value
+    new_f.__name__ = f.__name__
+    return new_f
+
+    
 class Estacion(object):
     def __init__(self, id, nombre, provincia, altitud, latitud, longitud):
         self.id = id
@@ -103,21 +126,43 @@ class Estacion(object):
         pass
 
     def cargarParte(self, d):
+        @exceptionEspeciales
+        def floatES(d):
+            return float(d.replace(',','.'))
+
+        @exceptionEspeciales
+        def hora(h):
+            hora, minutos = h.split(':')
+            return datetime.time(int(hora), int(minutos))
+
         fecha = datetime.date(int(d[4]),int(d[5]),int(d[6]))
-        self.valores[fecha] = tuple(d[7:])
+        #for i in range(len(d)):
+        #    print "%s : %s" % (i, d[i])
+        self.valores[fecha] = {
+                't_max' : (floatES(d[7]), hora(d[8])),
+                't_min' : (floatES(d[9]), hora(d[10])),
+                't_med' : floatES(d[11]),
+                'racha' : (floatES(d[12]), floatES(d[13]), hora(d[14])),
+                'vel_media': floatES(d[15]),
+                'prec' : floatES(d[16]),
+                'sol' : floatES(d[17]),
+                'pres_max': (floatES(d[18]), floatES(d[19])),
+                'prex_min': (floatES(d[20]), floatES(d[21]))
+            }
 
     def cargarDiarios(self, datos):
         """ datos """
         for d in datos:
-            fecha = datetime.date(int(d[4]),int(d[5]),int(d[6]))
-            self.valores[fecha] = tuple(d[7:])
+            self.cargarParte(d)
 
 if __name__ == "__main__":
     calima = Calima(path='datos/')
     calima.generarEstaciones()
     print calima.estaciones.keys()
     print "Numero estaciones ", len(calima.estaciones)
-    calima.generarDatosAnual([2009,2010])
-    calima.generarDatosAnual(2010)
+    #calima.generarDatosAnual([2009,2010])
+    calima.generarDatosAnual(2009)
+    #calima.generarDatosAnual(2012)
     #print [calima.getEstacion(x).valores for x in calima.estaciones]
+    print calima.estaciones[calima.estaciones.keys()[0]].valores
 
