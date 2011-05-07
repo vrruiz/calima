@@ -5,6 +5,9 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+
+	(r'^api/', include('calima.api.urls')),
+
     # Examples:
     # url(r'^$', 'calima.views.home', name='home'),
     # url(r'^calima/', include('calima.foo.urls')),
