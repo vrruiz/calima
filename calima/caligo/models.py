@@ -1,3 +1,5 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
 from django.db import models
 
 
@@ -26,7 +28,7 @@ class Station(models.Model):
         return self.name
 
 
-def DailyReport(models.Model):
+class DailyReport(models.Model):
     """A daily meteorological report"""
 
     date = models.DateTimeField(_('Date'), null=False)
@@ -43,9 +45,9 @@ def DailyReport(models.Model):
     avg_t = models.DecimalField(verbose_name=_(u'Average temperature (ºC)'), decimal_places=2,
     	blank=True, null=True)
 	squall = models.DecimalField(verbose_name=_(u'Maximum squall (m/s)'), decimal_places=2,
-		blank=True, null=True)
-    squall_dir = models.IntegerField(verbose_name=_(u'Direction of maximum squall (degrees*10)'),
-    	blank=True, null=True)
+        blank=True, null=True)
+    squall_dir = models.IntegerField(verbose_name=_(u'Direction of maximum squall (degrees*10)'), 
+        blank=True, null=True)
     squall_time = models.TimeField(verbose_name=_(u'Time of maximum squall'), blank=True,
     	null=True)
     wind_avg_speed = models.DecimalField(verbose_name=_(u'Average wind speed (m/s)'),
