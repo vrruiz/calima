@@ -52,7 +52,7 @@ class DailyReport(models.Model):
     	null=True)
     wind_avg_speed = models.DecimalField(verbose_name=_(u'Average wind speed (m/s)'), max_digits=5,
     	decimal_places=2, blank=True, null=True)
-    precip = min_t = models.DecimalField(verbose_name=_(u'Precipitaion (mm)'), max_digits=6,
+    precip = models.DecimalField(verbose_name=_(u'Precipitaion (mm)'), max_digits=6,
         decimal_places=2, blank=True, null=True)
     sunshine = models.DecimalField(verbose_name=_(u'Sunshine (hours)'), max_digits=5,
         decimal_places=2, blank=True, null=True)
