@@ -44,24 +44,26 @@ class DailyReport(models.Model):
     	null=True)
     avg_t = models.DecimalField(verbose_name=_(u'Average temperature (ºC)'), max_digits=5,
         decimal_places=2, blank=True, null=True)
-    squall = models.DecimalField(verbose_name=_(u'Maximum squall (m/s)'), max_digits=5,
-        decimal_places=2, blank=True, null=True)
+    squall = models.DecimalField(verbose_name=_(u'Maximum squall (m/s)'),
+            max_digits=7, decimal_places=2, blank=True, null=True)
     squall_dir = models.IntegerField(verbose_name=_(u'Direction of maximum squall (degrees*10)'),
     	blank=True, null=True)
     squall_time = models.TimeField(verbose_name=_(u'Time of maximum squall'), blank=True,
     	null=True)
-    wind_avg_speed = models.DecimalField(verbose_name=_(u'Average wind speed (m/s)'), max_digits=5,
+    wind_avg_speed = models.DecimalField(verbose_name=_(u'Average wind speed (m/s)'), max_digits=7,
     	decimal_places=2, blank=True, null=True)
-    precip = models.DecimalField(verbose_name=_(u'Precipitaion (mm)'), max_digits=6,
+    precip = models.DecimalField(verbose_name=_(u'Precipitaion (mm)'),
+            max_digits=7,
         decimal_places=2, blank=True, null=True)
-    sunshine = models.DecimalField(verbose_name=_(u'Sunshine (hours)'), max_digits=5,
+    sunshine = models.DecimalField(verbose_name=_(u'Sunshine (hours)'),
+            max_digits=7,
         decimal_places=2, blank=True, null=True)
     max_press = models.DecimalField(verbose_name=_(u'Maximum barometric pressure (hPa)'),
-    	max_digits=5, decimal_places=2, blank=True, null=True)
+    	max_digits=7, decimal_places=2, blank=True, null=True)
     max_press_time = models.TimeField(verbose_name=_(u'Time of maximum pressure'), blank=True,
     	null=True)
     min_press = models.DecimalField(verbose_name=_(u'Minimum barometric pressure (hPa)'),
-    	max_digits=5, decimal_places=2, blank=True, null=True)
+    	max_digits=7, decimal_places=2, blank=True, null=True)
     min_press_time = models.TimeField(verbose_name=_(u'Time of minimum pressure'), blank=True,
         null=True)
     imp_prec = models.BooleanField(verbose_name=_(u'Imperceptible precipitation'))

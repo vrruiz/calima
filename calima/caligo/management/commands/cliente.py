@@ -3,6 +3,7 @@ import os, datetime
 import glob, gzip, csv
 import re
 import sys
+from decimal import Decimal, InvalidOperation
 
 FTP=''
 
@@ -88,21 +89,21 @@ class Calima(object):
                 self._importarAnual(year)
 
 
-ESPECIALES = {'Ip': 'Ip', 'Acum': 'Acum', 'Varias': 'Varias', '': None}
+# TODO Dar valor a Acum
+ESPECIALES = {'Ip': 'Ip', 'Acum': None, 'Varias': None, '': None}
 
 def exceptionEspeciales(f):
     def new_f(value):
         try:
             return f(value)
-        except ValueError:
+        except (ValueError, InvalidOperation):
             # Valores especiales
             if value in ESPECIALES:
                 return ESPECIALES[value] 
             else:
-                logger.error('Improper value parsing file %s %s' % (str(value),
+                logger.error('Improper value parsing file, val: %s %s' % (str(value),
                         str(sys.exc_info())))
-                #raise Exception('Error parsing line')
-                return value
+                return None
     new_f.__name__ = f.__name__
     return new_f
 
@@ -113,10 +114,14 @@ class Estacion(object):
         self.nombre = nombre
         self.provincia = provincia
         self.altitud = int(altitud)
-        if altitud[-1] == 'S':
+        if latitud[-1] == 'S':
             self.latitud = -1 * int(latitud[:-1])
+        else:
+            self.latitud = int(latitud[:-1])
         if longitud[-1] == 'W':
             self.longitud = -1 * int(longitud[:-1])
+        else:
+            self.longitud = int(longitud[:-1])
         self.valores = {}
 
     def __repr__(self):
@@ -128,26 +133,30 @@ class Estacion(object):
     def cargarParte(self, d):
         @exceptionEspeciales
         def floatES(d):
-            return float(d.replace(',','.'))
+            return Decimal(d.replace(',','.'))
+
+        @exceptionEspeciales
+        def hora_min(h):
+            hora, minutos = h.split(':')
+            return datetime.time(int(hora), int(minutos))
 
         @exceptionEspeciales
         def hora(h):
-            hora, minutos = h.split(':')
-            return datetime.time(int(hora), int(minutos))
+            return datetime.time(int(h))
 
         fecha = datetime.date(int(d[4]),int(d[5]),int(d[6]))
         #for i in range(len(d)):
         #    print "%s : %s" % (i, d[i])
         self.valores[fecha] = {
-                't_max' : (floatES(d[7]), hora(d[8])),
-                't_min' : (floatES(d[9]), hora(d[10])),
+                't_max' : (floatES(d[7]), hora_min(d[8])),
+                't_min' : (floatES(d[9]), hora_min(d[10])),
                 't_med' : floatES(d[11]),
-                'racha' : (floatES(d[12]), floatES(d[13]), hora(d[14])),
+                'racha' : (floatES(d[12]), floatES(d[13]), hora_min(d[14])),
                 'vel_media': floatES(d[15]),
                 'prec' : floatES(d[16]),
                 'sol' : floatES(d[17]),
-                'pres_max': (floatES(d[18]), floatES(d[19])),
-                'prex_min': (floatES(d[20]), floatES(d[21]))
+                'max_press': (floatES(d[18]), hora(d[19])),
+                'min_press': (floatES(d[20]), hora(d[21]))
             }
 
     def cargarDiarios(self, datos):
@@ -164,5 +173,6 @@ if __name__ == "__main__":
     calima.generarDatosAnual(2009)
     #calima.generarDatosAnual(2012)
     #print [calima.getEstacion(x).valores for x in calima.estaciones]
-    print calima.estaciones[calima.estaciones.keys()[0]].valores
+    estacion = calima.estaciones['8500A']
+    print estacion.provincia
 
