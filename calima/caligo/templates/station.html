@@ -7,9 +7,9 @@
 {% block content %}
 <h1>Estacion: {{ station.code }} {{ station.name }}{% if parameters %}
     Filtro:
-    {% if parameters.year %}ano {{ parameters.year }}{% endif %}
-    {% if parameters.starts_year%} desde el anho {{ parameters.starts_year }}{% endif %}
-    {% if parameters.ends_year%} hasta el anho {{ parameters.ends_year }}{% endif %}
+    {% if parameters.year %}año {{ parameters.year }}{% endif %}
+    {% if parameters.year_starts %} desde el año {{ parameters.year_starts }}{% endif %}
+    {% if parameters.year_ends  %} hasta el año {{ parameters.year_ends }}{% endif %}
 {% endif %}
 </h1>
 
@@ -21,11 +21,6 @@
 {% endfor %}
 </p>
 </div>
-
-<h2>Por años</h2>
-{% for year in years %}
-    <a href="?year={{ year.year }}">{{ year.year }}</a>
-{% endfor %}
 
 <h2>Lo más</h2>
 <a href="/caligo/stations/{{ station.code }}/temperatura/maximo">Temperaturas maximas</a>
