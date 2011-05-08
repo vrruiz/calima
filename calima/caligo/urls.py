@@ -10,4 +10,6 @@ urlpatterns = patterns('',
 
     url(r'^api/', views.api),
     url(r'^about/', views.about),
+    url(r'^$', views.index_html),
+    url(r'^index.html', views.index_html),
 )

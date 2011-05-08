@@ -73,3 +73,7 @@ def api(request):
 def about(request):
     # About info page
     return render_to_response('about.html')
+
+def index_html(request):
+    # index page
+    return render_to_response('index.html')
