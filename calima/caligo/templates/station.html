@@ -5,12 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<h1>Estación: {{ station.code }} {{ station.name }}</h1>
 {% if parameters %}
-    {% if parameters.year %}<h1>Año {{ parameters.year }}</h1>{% endif %}
-    {% if parameters.starts_year%}<h1>Desde el año {{ parameters.starts_year }}</h1>{% endif %}
-    {% if parameters.ends_year%}<h1>hasta el año {{ parameters.ends_year }}</h1>{% endif %}
+<h1><a href="/caligo/stations/{{ station.code }}">Estación: {{ station.name }}</a></h1>
+{% else %}
+<h1>Estación: {{ station.name }}</h1>
 {% endif %}
+
+<h3><a href="/caligo/provinces/{{ station.province.id }}">Provincia: {{ station.province.name }}</a>
+| Código: {{ station.code }} | Altura: {{ station.altitude }}m | Latitud: {{ station.latitude }} |
+Longitud: {{ station.longitude }}</h3>
 
 <div>
 <h2>Por años</h2>
@@ -22,19 +25,27 @@
 </div>
 
 <h2>Lo más</h2>
+<p>
 <a href="/caligo/stations/{{ station.code }}/temperatura/maximo">Temperaturas maximas</a>
 <a href="/caligo/stations/{{ station.code }}/temperatura/minimo">Temperaturas minimas</a>
 <a href="/caligo/stations/{{ station.code }}/viento/racha/maximo">Racha de viento maximas</a>
 <a href="/caligo/stations/{{ station.code }}/viento/racha/minimo">Racha de viento minimas</a>
 <a href="/caligo/stations/{{ station.code }}/precipitacion_diaria/maximo">Precipitaciones maximas</a>
 <a href="/caligo/stations/{{ station.code }}/precipitacion_diaria/minimo">Precipitaciones minimas</a>
+</p>
+
+{% if parameters %}
+    {% if parameters.year %}<h1>Año {{ parameters.year }}</h1>{% endif %}
+    {% if parameters.starts_year%}<h1>Desde el año {{ parameters.starts_year }}</h1>{% endif %}
+    {% if parameters.ends_year%}<h1>hasta el año {{ parameters.ends_year }}</h1>{% endif %}
+{% endif %}
 
 {% if parameters %}
 
 {%if data %}
 <div>
 <h2>Temperaturas máximas y mínimas</h2>
-<div id="temperature" style="width:700px; height:300px; text-align: center; margin: 20px;"></div>
+<div id="temperature" style="width:700px; height:200px; text-align: center; margin: 20px;"></div>
 <script type="text/javascript">
   g = new Dygraph(
 
@@ -51,7 +62,7 @@
 
 <div>
 <h2>Precipitaciones</h2>
-<div id="precipitation" style="width:700px; height:300px; text-align: center; margin: 20px;"></div>
+<div id="precipitation" style="width:700px; height:200px; text-align: center; margin: 20px;"></div>
 <script type="text/javascript">
   g = new Dygraph(
 
@@ -68,7 +79,7 @@
 
 <div>
 <h2>Viento</h2>
-<div id="wind_average" style="width:700px; height:300px; text-align: center; margin: 20px;"></div>
+<div id="wind_average" style="width:700px; height:200px; text-align: center; margin: 20px;"></div>
 <script type="text/javascript">
   g = new Dygraph(
 
@@ -85,7 +96,7 @@
 
 <div>
 <h2>Presión</h2>
-<div id="pressure" style="width:700px; height:300px; text-align: center; margin: 20px;"></div>
+<div id="pressure" style="width:700px; height:200px; text-align: center; margin: 20px;"></div>
 <script type="text/javascript">
   g = new Dygraph(
 
