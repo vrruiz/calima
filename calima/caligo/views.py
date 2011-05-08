@@ -43,14 +43,21 @@ def stations(request, stationId=None):
         a = dict([ (mapfilter[x] , request.GET.get(x)) for x in request.GET if x
             in mapfilter])
 
+        # Get the date order by date
         data = DailyReport.objects.filter(station=obj).order_by('date')
 
+        # Apply the filters
+        data_filtered = data.filter(**a)
+
+        # Data for the char, has to be converted
+        data_tmax  = [[ float(x.max_t) for x in data_filtered]] 
         return render_to_response('station.html', 
                 {
                     'station' : obj,
-                    'data'    : data.filter(**a),
+                    'data'    : data_filtered,
                     'years'   : data.dates('date', 'year'),
                     'months'  : data.dates('date', 'month'),
+                    'data_t_max': data_tmax,
                     'parameters' : request.GET.urlencode()
                     })
 
