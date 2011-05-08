@@ -1,11 +1,34 @@
 <li>Fecha: {{ daily.date|date:"d l N Y" }}</li>
-<li>Temp minima: {{ daily.min_t }}</li>
-<li>Temp maxima: {{ daily.max_t }}</li>
-<li>Temp media: {{ daily.avg_t }}</li>
-<li>Precipitacion (mm): {{ daily.precip|default:"No hay datos" }}</li>
-<li>Velocidad media del viento m/s: {{ daily.wind_avg_speed }}</li>
-<li>Horas de sol : {{ daily.sunshine }}</li>
-<li>Presion maxima (hPa): {{ daily.max_press }}{% if daily.max_press_time %} a
-las {{ daily.max_press_time }}{% endif %}</li>
-<li>Presion minima (hPa): {{ daily.min_press }}{% if daily.max_press_time %} a
-las {{ daily.min_press_time }}{% endif %}</li>
+{% if daily.min_t %}
+    <li>Temp minima: {{ daily.min_t }}{% if daily.min_t_time %}
+    a las {{ daily.min_t_time }}{% endif %}</li>
+{% endif %}
+{% if daily.max_t%}
+    <li>Temp maxima: {{ daily.max_t }}{% if daily.max_t_time %}
+    a las {{ daily.max_t_time }}{% endif %}</li>
+{% endif %}
+{% if daily.avg_t %}
+    <li>Temp media: {{ daily.avg_t }}</li>
+{% endif %}
+{% if daily.precip %}
+    <li>Precipitacion (mm): {{ daily.precip|default:"No hay datos" }}</li>
+{% endif %}
+{% if daily.wind_avg_speed %}
+    <li>Velocidad media del viento m/s: {{ daily.wind_avg_speed }}</li>
+{% endif %}
+{% if daily.squall %}
+    <li>Racha de viento maxima (m/s): {{ daily.squall }}
+    {% if daily.squall_dir %} direccion {{ daily.squall_dir }}° {% endif %}
+    {% if daily.squall_time %} a las {{ daily.squall_time }}{% endif %}
+{% endif %}
+{% if daily.sunshine %}
+    <li>Horas de sol : {{ daily.sunshine }}</li>
+{% endif %}
+{% if daily.max_press %}
+    <li>Presion maxima (hPa): {{ daily.max_press }}{% if daily.max_press_time %}
+    a las {{ daily.max_press_time }}{% endif %}</li>
+{% endif %}
+{% if daily.min_press %}
+    <li>Presion minima (hPa): {{ daily.min_press }}{% if daily.max_press_time %} a
+    las {{ daily.min_press_time }}{% endif %}</li>
+{% endif %}

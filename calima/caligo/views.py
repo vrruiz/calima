@@ -91,6 +91,8 @@ def stations(request, stationId=None, filtro=None):
             data_filtered = min_temperature(data_filtered)
         elif filtro == 'max_squall':
             data_filtered = max_squall(data_filtered)
+        elif filtro == 'min_squall':
+            data_filtered = min_squall(data_filtered)
         elif filtro == 'max_prec':
             data_filtered =  max_precip(data_filtered)
         elif filtro == 'min_prec':

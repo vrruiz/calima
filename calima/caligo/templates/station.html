@@ -25,7 +25,13 @@
 {% for year in years %}
     <a href="?year={{ year.year }}">{{ year.year }}</a>
 {% endfor %}
-
+<h2>Otros valores</h2>
+<a href="/caligo/stations/{{ station.code }}/temperatura/maximo">Temperaturas maximas</a>
+<a href="/caligo/stations/{{ station.code }}/temperatura/minimo">Temperaturas minimas</a>
+<a href="/caligo/stations/{{ station.code }}/viento/racha/maximo">Racha de viento maximas</a>
+<a href="/caligo/stations/{{ station.code }}/viento/racha/minimo">Racha de viento minimas</a>
+<a href="/caligo/stations/{{ station.code }}/precipitacion_diaria/maximo">Precipitaciones maximas</a>
+<a href="/caligo/stations/{{ station.code }}/precipitacion_diaria/minimo">Precipitaciones minimas</a>
 {% for daily in data %}
     <ul>
         {% include "dailyreport.html" %}
