@@ -12,4 +12,23 @@ API
 
 Web
 ---
-
+- Página principal
+- Sobre calima
+  - AEMET
+  - Serie climatológica
+- Abredatos
+- Estadísticas: Lo más
+  - Máxima temperatura
+  - Mínima temperatura
+  - Año más caluroso
+  - Año más frío
+  - Mayor precipitación
+  - Menor precipitación
+  - Año más húmedo
+  - Año más seco
+- Mapa de provincias
+  - Estaciones
+- Estaciones
+- Estación
+  - Serie climatológica
+  - Estadísticas: Lo más
