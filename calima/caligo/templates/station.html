@@ -1,9 +1,28 @@
 {% extends 'calima_index.html' %}
 
-{% block title %}Estacion: {{ station.code }} {{ station.name }} {% endblock %}
+{% block title %}Estacion: {{ station.code }} {{ station.name }}
+{% if parameters %}
+    Filtrado por:
+    {% if parameters.month %}
+        {{ parameters.month }}
+    {% endif %}
+    {% if parameters.year %}
+           , {{ parameters.year }}
+    {% endif %}
+{% endif %}
+{% endblock %}
 
 {% block content %}
-<h1>Estacion: {{ station.code }} {{ station.name }}</h1>
+<h1>Estacion: {{ station.code }} {{ station.name }}{% if parameters %}
+    Filtrado por:
+    {% if parameters.month %}
+        {{ parameters.month }}
+    {% endif %}
+    {% if parameters.year %}
+           , {{ parameters.year }}
+    {% endif %}
+{% endif %}
+</h1>
   <script type="text/javascript" charset="utf-8"> 
             window.onload = function () {
                 var r = Raphael("holder");
@@ -15,13 +34,15 @@
             };
         </script> 
 <div id="holder"></div>
+
 <h2>Filtra por anho</h2>
 {% for year in years %}
     <a href="?year={{ year.year }}">{{ year.year }}</a>
 {% endfor %}
+
 <h2>Filtra por mes</h2>
 {% for month in months %}
-    <a href="{{ parameters }}?month={{ month.month }}">{{ month.month }}</a>
+    <a href="?month={{ month.month }}">{{ month|date:"N" }}</a>
 {% endfor %}
 
 {% for daily in data %}

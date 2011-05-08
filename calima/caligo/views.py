@@ -95,7 +95,7 @@ def stations(request, stationId=None, filtro=None):
                     'data'    : data_filtered,
                     'years'   : data.dates('date', 'year'),
                     'months'  : data.dates('date', 'month'),
-                    'parameters' : request.GET.urlencode(),
+                    'parameters' : request.GET,
                     })
 
     # General view
