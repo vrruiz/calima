@@ -1,4 +1,11 @@
-<li>date: {{ daily.date|date:"d l N Y" }}</li>
-<li>min: {{ daily.min_t }}</li>
-<li>max: {{ daily.max_t }}</li>
-<li>precip : {{ daily.precip }}</li>
+<li>Fecha: {{ daily.date|date:"d l N Y" }}</li>
+<li>Temp minima: {{ daily.min_t }}</li>
+<li>Temp maxima: {{ daily.max_t }}</li>
+<li>Temp media: {{ daily.avg_t }}</li>
+<li>Precipitacion (mm): {{ daily.precip|default:"No hay datos" }}</li>
+<li>Velocidad media del viento m/s: {{ daily.wind_avg_speed }}</li>
+<li>Horas de sol : {{ daily.sunshine }}</li>
+<li>Presion maxima (hPa): {{ daily.max_press }}{% if daily.max_press_time %} a
+las {{ daily.max_press_time }}{% endif %}</li>
+<li>Presion minima (hPa): {{ daily.min_press }}{% if daily.max_press_time %} a
+las {{ daily.min_press_time }}{% endif %}</li>
