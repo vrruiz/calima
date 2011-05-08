@@ -1,33 +1,73 @@
 {% extends 'calima_index.html' %}
+{% load number_extras %}
 
 {% block title %}Estacion: {{ station.code }} {{ station.name }} {% endblock %}
 
 {% block content %}
-<h1>Estacion: {{ station.code }} {{ station.name }}</h1>
-  <script type="text/javascript" charset="utf-8"> 
-            window.onload = function () {
-                var r = Raphael("holder");
-                r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
-                
-                r.g.text(100, 10, "Temperatura maxima");
+<h1>Estación: {{ station.code }} {{ station.name }}</h1>
 
-                r.g.barchart(10, 10, 300, 220, {{ data_t_max}}, 0, {type: "sharp"});
-            };
-        </script> 
-<div id="holder"></div>
-<h2>Filtra por anho</h2>
+<div>
+<h2>Por años</h2>
+<p>
 {% for year in years %}
     <a href="?year={{ year.year }}">{{ year.year }}</a>
 {% endfor %}
-<h2>Filtra por mes</h2>
-{% for month in months %}
-    <a href="{{ parameters }}?month={{ month.month }}">{{ month.month }}</a>
-{% endfor %}
+</p>
+</div>
 
+{%if data %}
+<div>
+<h2>Temperaturas máximas y mínimas</h2>
+<div id="temperature" style="width:700px; height:300px; text-align: center; margin: 20px;"></div>
+<script type="text/javascript">
+  g = new Dygraph(
+
+    // containing div
+    document.getElementById("temperature"),
+    // CSV or path to a CSV file.
+    "Fecha,Máx &deg;C,Min &deg;C\n" +
 {% for daily in data %}
-    <ul>
-        {% include "dailyreport.html" %}
-    </ul>
-{% endfor %}
+    "{{ daily.date|date:"Y-m-d" }},{{ daily.max_t|dotpoint }},{{ daily.min_t|dotpoint }}\n" +{% endfor %}
+    ""
+  );
+</script>
+</div>
+
+<div>
+<h2>Precipitaciones</h2>
+<div id="precipitation" style="width:700px; height:300px; text-align: center; margin: 20px;"></div>
+<script type="text/javascript">
+  g = new Dygraph(
+
+    // containing div
+    document.getElementById("precipitation"),
+    // CSV or path to a CSV file.
+    "Fecha,Precipitaciones\n" +
+{% for daily in data %}
+    "{{ daily.date|date:"Y-m-d" }},{{ daily.precip|dotpoint }}\n" +{% endfor %}
+    ""
+  );
+</script>
+</div>
+
+<div>
+<h2>Viento</h2>
+<div id="wind_average" style="width:700px; height:300px; text-align: center; margin: 20px;"></div>
+<script type="text/javascript">
+  g = new Dygraph(
+
+    // containing div
+    document.getElementById("wind_average"),
+    // CSV or path to a CSV file.
+    "Fecha,Precipitaciones\n" +
+{% for daily in data %}
+    "{{ daily.date|date:"Y-m-d" }},{{ daily.wind_avg|dotpoint }}\n" +{% endfor %}
+    ""
+  );
+</script>
+</div>
+
+
+{% endif %}
 
 {% endblock %}

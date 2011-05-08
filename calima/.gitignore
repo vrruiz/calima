@@ -1,2 +1,3 @@
 *.pyc
 error.log
+settings_local.py
