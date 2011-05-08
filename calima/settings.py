@@ -119,7 +119,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'calima.urls'
 
 TEMPLATE_DIRS = (
-	path.join(BASEDIR, 'media')
+	path.join(BASEDIR, 'media'),
+    path.join(BASEDIR, 'caligo/templates/'),
 )
 
 INSTALLED_APPS = (
