@@ -31,7 +31,7 @@ class Station(models.Model):
 class DailyReport(models.Model):
     """A daily meteorological report"""
 
-    date = models.DateTimeField(_('Date'), null=False)
+    date = models.DateField(_('Date'), null=False)
     station = models.ForeignKey("Station", verbose_name=_(u'Station to which this report applies'),
         related_name='reports', blank=True, null=True)
     max_t = models.DecimalField(verbose_name=_(u'Maximum temperature (ºC)'), max_digits=5,
