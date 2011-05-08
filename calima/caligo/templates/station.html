@@ -5,10 +5,8 @@
 
 {% block content %}
 <h1>Estacion: {{ station.code }} {{ station.name }}{% if parameters %}
-    Filtrado por:
-    {% if parameters.day %}dia={{ parameters.dia }}{% endif %}
-    {% if parameters.month %}mes={{ parameters.month }}{% endif %}
-    {% if parameters.year %},ano={{ parameters.year }}{% endif %}
+    Filtrado por
+    {% if parameters.year %}ano: {{ parameters.year }}{% endif %}
 {% endif %}
 </h1>
   <script type="text/javascript" charset="utf-8"> 
@@ -26,11 +24,6 @@
 <h2>Filtra por anho</h2>
 {% for year in years %}
     <a href="?year={{ year.year }}">{{ year.year }}</a>
-{% endfor %}
-
-<h2>Filtra por mes</h2>
-{% for month in months %}
-    <a href="?month={{ month.month }}">{{ month|date:"N" }}</a>
 {% endfor %}
 
 {% for daily in data %}
