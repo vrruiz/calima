@@ -5,8 +5,10 @@
 
 {% block content %}
 <h1>Estacion: {{ station.code }} {{ station.name }}{% if parameters %}
-    Filtrado por
-    {% if parameters.year %}ano: {{ parameters.year }}{% endif %}
+    Filtro:
+    {% if parameters.year %}ano {{ parameters.year }}{% endif %}
+    {% if parameters.starts_year%} desde el anho {{ parameters.starts_year }}{% endif %}
+    {% if parameters.ends_year%} hasta el anho {{ parameters.ends_year }}{% endif %}
 {% endif %}
 </h1>
   <script type="text/javascript" charset="utf-8"> 
