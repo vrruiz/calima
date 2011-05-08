@@ -43,12 +43,15 @@ def stations(request, stationId=None):
         a = dict([ (mapfilter[x] , request.GET.get(x)) for x in request.GET if x
             in mapfilter])
 
-        data = DailyReport.objects.filter(station=obj, **a).order_by('date')
+        data = DailyReport.objects.filter(station=obj).order_by('date')
 
         return render_to_response('station.html', 
                 {
                     'station' : obj,
-                    'data'    : data,
+                    'data'    : data.filter(**a),
+                    'years'   : data.dates('date', 'year'),
+                    'months'  : data.dates('date', 'month'),
+                    'parameters' : request.GET.urlencode()
                     })
 
     # General view

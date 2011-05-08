@@ -5,6 +5,15 @@
 {% block content %}
 <h1>Estacion: {{ station.code }} {{ station.name }}</h1>
 
+<h2>Filtra por anho</h2>
+{% for year in years %}
+    <a href="?year={{ year.year }}">{{ year.year }}</a>
+{% endfor %}
+<h2>Filtra por mes</h2>
+{% for month in months %}
+    <a href="{{ parameters }}?month={{ month.month }}">{{ month.month }}</a>
+{% endfor %}
+
 {% for daily in data %}
 <p> {{ daily.date }} Tempmax: {{ daily.max_t }}</p>
 {% endfor %}
