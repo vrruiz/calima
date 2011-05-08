@@ -19,10 +19,24 @@ class StationHandler(BaseHandler):
    allowed_methods = ('GET',)
    model = Station  
 
-   def read(self, request, code=None):
+   def read(self, request, station_code=None):
         base = Station.objects
         
-        if code:
-            return base.get(code=code)
+        if station_code:
+            return base.get(code=station_code)
+        else:
+            return base.all()
+
+
+class DailyReportHandler(BaseHandler):
+   allowed_methods = ('GET',)
+   model = DailyReport
+   exclude = ('station',)
+
+   def read(self, request, station_code=None):
+        base = DailyReport.objects
+
+        if station_code:
+            return base.filter(station__code=station_code)
         else:
             return base.all()
