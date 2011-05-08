@@ -5,4 +5,7 @@
 {% block content %}
 <h1>Estacion: {{ station.code }} {{ station.name }}</h1>
 
+{% for daily in data %}
+<p> {{ daily.date }} Tempmax: {{ daily.max_t }}</p>
+{% endfor %}
 {% endblock %}

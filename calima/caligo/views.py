@@ -2,7 +2,7 @@
 from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 
-from caligo.models import Province, Station
+from caligo.models import Province, Station, DailyReport
 
 def provinces(request, provinceId=None):
     # For specific province
@@ -24,15 +24,31 @@ def provinces(request, provinceId=None):
         Province.objects.all()})
 
 def stations(request, stationId=None):
+    from datetime import datetime
+    """ Parameters
+        ?year
+        ? month
+    """
     if stationId:
         try:
             obj = Station.objects.get(code=stationId)
         except Station.DoesNotExist:
             return render_to_response('404.html', 
                 {"text": "Station %s not found" % stationId})
+
+        # Keyword for filter ....
+        # Get the parameters form the GEt and generates the filter
+        mapfilter = {'year': 'date__year',
+                     'month': 'date__month'}
+        a = dict([ (mapfilter[x] , request.GET.get(x)) for x in request.GET if x
+            in mapfilter])
+
+        data = DailyReport.objects.filter(station=obj, **a).order_by('date')
+
         return render_to_response('station.html', 
                 {
-                    'station': obj,
+                    'station' : obj,
+                    'data'    : data,
                     })
 
     # General view
