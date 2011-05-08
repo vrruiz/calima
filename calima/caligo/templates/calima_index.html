@@ -11,8 +11,8 @@
   <meta name="description" content="Calima - Memoria del clima" />
   <meta name="keywords" content="clima, serie temporal, temperatura, máximos, mínimos" />
 
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/layout.css" media="screen, projection, tv " />
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/html.css" media="screen, projection, tv " />
+  <link rel="stylesheet" type="text/css" href="/static/css/layout.css" media="screen, projection, tv " />
+  <link rel="stylesheet" type="text/css" href="/static/css/html.css" media="screen, projection, tv " />
 </head>
 
 <body>
@@ -23,7 +23,7 @@
   <!-- #header: holds the logo and top links -->
   <div id="header" class="width">
 
-    <img src="{{ STATIC_URL }}images/logo.gif" alt="Your logo goes here"/>
+    <img src="/static/images/logo.gif" alt="Your logo goes here"/>
 
     <ul>
       <li><a href="index.html">Inicio</a></li>
@@ -43,15 +43,15 @@
 
     <ul>
       <li>
-        <a href="estadisticas/" onfocus="blur()">
+        <a href="/estadisticas/" onfocus="blur()">
           <span class="title ">Estadísticas</span>
           <span class="desc">Temperaturas máx, mín</span>        </a>      </li>
       <li>
-        <a href="provincias/" class="forum" onfocus="blur()">
+        <a href="/provincias/" class="forum" onfocus="blur()">
           <span class="title ">Provincias</span>
           <span class="desc style3">Lista de provincias</span>        </a>      </li>
       <li>
-        <a href="estaciones/" onfocus="blur()">
+        <a href="/estaciones/" onfocus="blur()">
           <span class="title ">Estaciones</span>
           <span class="desc">Lista de estaciones</span>
         </a>
@@ -104,7 +104,7 @@
   <!-- #bg: applies the site width and footer background -->
   <div id="bg" class="width">
 
-    <img src="{{ STATIC_URL }}images/logo.gif" alt="Your logo goes here"/>
+    <img src="/static/images/logo.gif" alt="Your logo goes here"/>c
 
     <ul>
       <li><a href="">Sitemap</a></li>
