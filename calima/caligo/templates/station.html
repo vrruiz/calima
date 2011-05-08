@@ -24,11 +24,10 @@
     <a href="{{ parameters }}?month={{ month.month }}">{{ month.month }}</a>
 {% endfor %}
 
-{% if filtered %}
-    {% for daily in data %}
-        <p> {{ daily.0 }}  {{ daily.1 }}</p>
-    {% endfor %}
-{% else %}
-    <p>Not filtered</p>
-{% endif %}
+{% for daily in data %}
+    <ul>
+        {% include "dailyreport.html" %}
+    </ul>
+{% endfor %}
+
 {% endblock %}
