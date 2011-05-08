@@ -5,13 +5,12 @@
 {% endblock %}
 
 {% block content %}
-<h1>Estacion: {{ station.code }} {{ station.name }}{% if parameters %}
-    Filtro:
-    {% if parameters.year %}ano {{ parameters.year }}{% endif %}
-    {% if parameters.starts_year%} desde el anho {{ parameters.starts_year }}{% endif %}
-    {% if parameters.ends_year%} hasta el anho {{ parameters.ends_year }}{% endif %}
+<h1>Estación: {{ station.code }} {{ station.name }}</h1>
+{% if parameters %}
+    {% if parameters.year %}<h1>Año {{ parameters.year }}</h1>{% endif %}
+    {% if parameters.starts_year%}<h1>Desde el año {{ parameters.starts_year }}</h1>{% endif %}
+    {% if parameters.ends_year%}<h1>hasta el año {{ parameters.ends_year }}</h1>{% endif %}
 {% endif %}
-</h1>
 
 <div>
 <h2>Por años</h2>
@@ -34,6 +33,8 @@
 <a href="/caligo/stations/{{ station.code }}/viento/racha/minimo">Racha de viento minimas</a>
 <a href="/caligo/stations/{{ station.code }}/precipitacion_diaria/maximo">Precipitaciones maximas</a>
 <a href="/caligo/stations/{{ station.code }}/precipitacion_diaria/minimo">Precipitaciones minimas</a>
+
+{% if parameters %}
 
 {%if data %}
 <div>
@@ -79,14 +80,33 @@
     // containing div
     document.getElementById("wind_average"),
     // CSV or path to a CSV file.
-    "Fecha,Precipitaciones\n" +
+    "Fecha,Viento (km/s)\n" +
 {% for daily in data %}
-    "{{ daily.date|date:"Y-m-d" }},{{ daily.wind_avg|dotpoint }}\n" +{% endfor %}
+    "{{ daily.date|date:"Y-m-d" }},{{ daily.wind_avg_speed|dotpoint }}\n" +{% endfor %}
     ""
   );
 </script>
 </div>
 
+<div>
+<h2>Presión</h2>
+<div id="pressure" style="width:700px; height:300px; text-align: center; margin: 20px;"></div>
+<script type="text/javascript">
+  g = new Dygraph(
+
+    // containing div
+    document.getElementById("pressure"),
+    // CSV or path to a CSV file.
+    "Fecha,Presión máx. (hPa),Presión mín. (hPa)\n" +
+{% for daily in data %}
+    "{{ daily.date|date:"Y-m-d" }},{{ daily.max_press|dotpoint }},{{ daily.min_press|dotpoint }}\n" +{% endfor %}
+    ""
+  );
+</script>
+</div>
+
+
+{% endif %}
 
 {% endif %}
 
