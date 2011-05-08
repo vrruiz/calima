@@ -1,0 +1,14 @@
+{% extends 'calima_index.html' %}
+
+{% block title %}Provincia: {{ province.name }}{% endblock %}
+
+{% block content %}
+<h1>Provincia: {{ province.name }}</h1>
+
+<ul>
+{% for station in stations %}
+<li><a href="/caligo/stations/{{ station.code }}/">{{ station.code }} {{ station.name }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}
