@@ -1,10 +1,17 @@
 {% extends 'calima_index.html' %}
 {% load number_extras %}
 
-{% block title %}Estacion: {{ station.code }} {{ station.name }} {% endblock %}
+{% block title %}Estacion: {{ station.code }} {{ station.name }}
+{% endblock %}
 
 {% block content %}
-<h1>Estación: {{ station.code }} {{ station.name }}</h1>
+<h1>Estacion: {{ station.code }} {{ station.name }}{% if parameters %}
+    Filtro:
+    {% if parameters.year %}ano {{ parameters.year }}{% endif %}
+    {% if parameters.starts_year%} desde el anho {{ parameters.starts_year }}{% endif %}
+    {% if parameters.ends_year%} hasta el anho {{ parameters.ends_year }}{% endif %}
+{% endif %}
+</h1>
 
 <div>
 <h2>Por años</h2>
@@ -14,6 +21,19 @@
 {% endfor %}
 </p>
 </div>
+
+<h2>Por años</h2>
+{% for year in years %}
+    <a href="?year={{ year.year }}">{{ year.year }}</a>
+{% endfor %}
+
+<h2>Lo más</h2>
+<a href="/caligo/stations/{{ station.code }}/temperatura/maximo">Temperaturas maximas</a>
+<a href="/caligo/stations/{{ station.code }}/temperatura/minimo">Temperaturas minimas</a>
+<a href="/caligo/stations/{{ station.code }}/viento/racha/maximo">Racha de viento maximas</a>
+<a href="/caligo/stations/{{ station.code }}/viento/racha/minimo">Racha de viento minimas</a>
+<a href="/caligo/stations/{{ station.code }}/precipitacion_diaria/maximo">Precipitaciones maximas</a>
+<a href="/caligo/stations/{{ station.code }}/precipitacion_diaria/minimo">Precipitaciones minimas</a>
 
 {%if data %}
 <div>

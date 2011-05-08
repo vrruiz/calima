@@ -33,12 +33,12 @@ def min_precip(queryset):
 def provinces(request, provinceId=None):
     # For specific province
     if provinceId:
-        # TODO Error Id
         try:
             obj = Province.objects.get(id=provinceId)
         except Province.DoesNotExist:
             return render_to_response('404.html',
                     {"text": "Province %s not found" % provinceId})
+
         return render_to_response('province.html', 
                 {
                     'province': obj,
@@ -53,7 +53,10 @@ def stations(request, stationId=None, filtro=None):
     from datetime import datetime
     """ Parameters
         ?year
-        ? month
+        ?month
+        ?day
+        stationId : the code of the station
+        filtro: a special keyword for specific view (see urls.py)
     """
     if stationId:
         try:
@@ -65,10 +68,14 @@ def stations(request, stationId=None, filtro=None):
         # Keyword for filter ....
         # Get the parameters form the GEt and generates the filter
         # keywords: year month day
-        mapfilter = {'year': 'date__year',
-                     'month': 'date__month',
-                     'day': 'date__day'}
-        a = dict([ (mapfilter[x] , request.GET.get(x)) for x in request.GET if x
+        mapfilter = {
+                'year': lambda w: ('date__year', w),
+                'month': lambda w: ('date__month', w),
+                'day': lambda w: ('date__day', w),
+                'starts_year' : lambda w: ('date__gt', datetime(int(w)-1,12,31)),
+                'ends_year' : lambda w: ('date__lt', datetime(int(w)+1,1,1)),
+                }
+        a = dict([ mapfilter[x](request.GET.get(x)) for x in request.GET if x
             in mapfilter])
 
         # Get the date order by date
@@ -84,6 +91,8 @@ def stations(request, stationId=None, filtro=None):
             data_filtered = min_temperature(data_filtered)
         elif filtro == 'max_squall':
             data_filtered = max_squall(data_filtered)
+        elif filtro == 'min_squall':
+            data_filtered = min_squall(data_filtered)
         elif filtro == 'max_prec':
             data_filtered =  max_precip(data_filtered)
         elif filtro == 'min_prec':
@@ -95,7 +104,7 @@ def stations(request, stationId=None, filtro=None):
                     'data'    : data_filtered,
                     'years'   : data.dates('date', 'year'),
                     'months'  : data.dates('date', 'month'),
-                    'parameters' : request.GET.urlencode(),
+                    'parameters' : request.GET,
                     })
 
     # General view
