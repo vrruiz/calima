@@ -1,26 +1,14 @@
 {% extends 'calima_index.html' %}
 
 {% block title %}Estacion: {{ station.code }} {{ station.name }}
-{% if parameters %}
-    Filtrado por:
-    {% if parameters.month %}
-        {{ parameters.month }}
-    {% endif %}
-    {% if parameters.year %}
-           , {{ parameters.year }}
-    {% endif %}
-{% endif %}
 {% endblock %}
 
 {% block content %}
 <h1>Estacion: {{ station.code }} {{ station.name }}{% if parameters %}
     Filtrado por:
-    {% if parameters.month %}
-        {{ parameters.month }}
-    {% endif %}
-    {% if parameters.year %}
-           , {{ parameters.year }}
-    {% endif %}
+    {% if parameters.day %}dia={{ parameters.dia }}{% endif %}
+    {% if parameters.month %}mes={{ parameters.month }}{% endif %}
+    {% if parameters.year %},ano={{ parameters.year }}{% endif %}
 {% endif %}
 </h1>
   <script type="text/javascript" charset="utf-8"> 
