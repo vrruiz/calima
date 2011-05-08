@@ -7,6 +7,8 @@ Descarga
     - He hecho un pequenho script que descarga el fichero del anho y lo
       actualiza. Usa celery, caligo/tasks.py.
 - Arreglar problema de hora -> Fixed, redondear a 23
+- Que el comando importar use la variable BASEDIR_DATA del settings para no
+  tener que pasarla
 
 
 API

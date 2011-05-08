@@ -1,0 +1,14 @@
+{% extends 'calima_index.html' %}
+
+{% block title %}Calima - Estaciones{% endblock %}
+
+{% block content %}
+<h1>Estaciones</h1>
+
+<ul>
+{% for station in stations %}
+<li><a href="{{ station.code }}">{{ station.name }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}
