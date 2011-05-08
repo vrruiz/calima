@@ -7,7 +7,7 @@
 
 <ul>
 {% for province in provinces %}
-<li><a href="/province/{{ province.name }}">{{ province.name }}</a></li>
+<li><a href="{{ province.id }}">{{ province.name }}</a></li>
 {% endfor %}
 </ul>
 
