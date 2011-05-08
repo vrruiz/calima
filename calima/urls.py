@@ -6,7 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    url(r'^caligo/', include('caligo.urls')),
+    url(
+    r'^', include('caligo.urls')),
+    (r'^caligo/', include('caligo.urls')),
 	(r'^api/', include('calima.api.urls')),
 
     # Examples:
