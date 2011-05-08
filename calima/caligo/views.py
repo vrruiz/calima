@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from caligo.models import Province, Station, DailyReport
 
+
 def provinces(request, provinceId=None):
     # For specific province
     if provinceId:
@@ -23,13 +24,14 @@ def provinces(request, provinceId=None):
     return render_to_response('province_list.html', {'provinces':
         Province.objects.all()})
 
-def stations(request, stationId=None):
+def stations(request, stationId=None, filtro=None):
     from datetime import datetime
     """ Parameters
         ?year
         ? month
     """
     if stationId:
+        print filtro
         try:
             obj = Station.objects.get(code=stationId)
         except Station.DoesNotExist:
@@ -49,16 +51,19 @@ def stations(request, stationId=None):
         # Apply the filters
         data_filtered = data.filter(**a)
 
+        if filtro:
+            data_filtered = data_filtered.values_list('date', filtro)
         # Data for the char, has to be converted
-        data_tmax  = [[ float(x.max_t) for x in data_filtered]] 
+        # Defina the data
+
         return render_to_response('station.html', 
                 {
                     'station' : obj,
                     'data'    : data_filtered,
                     'years'   : data.dates('date', 'year'),
                     'months'  : data.dates('date', 'month'),
-                    'data_t_max': data_tmax,
-                    'parameters' : request.GET.urlencode()
+                    'parameters' : request.GET.urlencode(),
+                    'filtered' : filtro != None,
                     })
 
     # General view

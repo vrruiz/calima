@@ -24,7 +24,11 @@
     <a href="{{ parameters }}?month={{ month.month }}">{{ month.month }}</a>
 {% endfor %}
 
-{% for daily in data %}
-<p> {{ daily.date }} Tempmax: {{ daily.max_t }}</p>
-{% endfor %}
+{% if filtered %}
+    {% for daily in data %}
+        <p> {{ daily.0 }}  {{ daily.1 }}</p>
+    {% endfor %}
+{% else %}
+    <p>Not filtered</p>
+{% endif %}
 {% endblock %}
