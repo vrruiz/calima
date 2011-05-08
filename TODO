@@ -4,6 +4,9 @@ POR HACER
 Descarga
 --------
 - Detección e importación de actualizaciones de nuevos datos.
+    - He hecho un pequenho script que descarga el fichero del anho y lo
+      actualiza. Usa celery, caligo/tasks.py.
+- Arreglar problema de hora -> Fixed, redondear a 23
 
 
 API

@@ -141,6 +141,30 @@ def exceptionEspeciales(f):
     new_f.__name__ = f.__name__
     return new_f
 
+def floatES(d):
+    # faster than waiting for exception
+    if not d:
+        return ''
+    try:
+        return Decimal(d.replace(',','.'))
+    except InvalidOperation:
+        return ESPECIALES[d] 
+
+@exceptionEspeciales
+def hora_min(h):
+    if not h:
+        return ''
+    hora, minutos = h.split(':')
+    return datetime.time(int(hora), int(minutos))
+
+@exceptionEspeciales
+def hora(h):
+    if not h:
+        return ''
+    h_int = int(h)
+    return h_int>23 and datetime.time(23) or datetime.time(h_int)
+
+
 
 class Estacion(object):
     def __init__(self, id, nombre, provincia, altitud, latitud, longitud):
@@ -169,19 +193,6 @@ class Estacion(object):
         pass
 
     def cargarParte(self, d):
-        @exceptionEspeciales
-        def floatES(d):
-            return Decimal(d.replace(',','.'))
-
-        @exceptionEspeciales
-        def hora_min(h):
-            hora, minutos = h.split(':')
-            return datetime.time(int(hora), int(minutos))
-
-        @exceptionEspeciales
-        def hora(h):
-            return datetime.time(int(h))
-
         fecha = datetime.date(int(d[4]),int(d[5]),int(d[6]))
         #for i in range(len(d)):
         #    print "%s : %s" % (i, d[i])
@@ -205,7 +216,8 @@ class Estacion(object):
 if __name__ == "__main__":
     calima = Calima(path='../../../../data/datos/')
     calima.generarEstaciones()
-    calima.actualizar()
+    #calima.actualizar()
+    calima.generarDatosAnual([2010])
     #print calima.estaciones.keys()
     #print "Numero estaciones ", len(calima.estaciones)
     #calima.generarDatosAnual([2009,2010])
