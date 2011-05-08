@@ -13,7 +13,11 @@ def provinces(request, provinceId=None):
         except Province.DoesNotExist:
             return render_to_response('404.html',
                     {"text": "Province %s not found" % provinceId})
-        return render_to_response('province.html', {'province': obj})
+        return render_to_response('province.html', 
+                {
+                    'province': obj,
+                    'stations': obj.stations.all(),
+                    })
 
     # General view
     return render_to_response('province_list.html', {'provinces':
@@ -26,7 +30,10 @@ def stations(request, stationId=None):
         except Station.DoesNotExist:
             return render_to_response('404.html', 
                 {"text": "Station %s not found" % stationId})
-        return render_to_response('station.html', {'station': obj})
+        return render_to_response('station.html', 
+                {
+                    'station': obj,
+                    })
 
     # General view
     return render_to_response('station_list.html', {'stations':
