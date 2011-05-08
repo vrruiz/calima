@@ -72,8 +72,8 @@ def stations(request, stationId=None, filtro=None):
                 'year': lambda w: ('date__year', w),
                 'month': lambda w: ('date__month', w),
                 'day': lambda w: ('date__day', w),
-                'starts_year' : lambda w: ('date__gt', datetime(int(w)-1,12,31)),
-                'ends_year' : lambda w: ('date__lt', datetime(int(w)+1,1,1)),
+                'year_starts' : lambda w: ('date__gt', datetime(int(w)-1,12,31)),
+                'year_ends' : lambda w: ('date__lt', datetime(int(w)+1,1,1)),
                 }
         a = dict([ mapfilter[x](request.GET.get(x)) for x in request.GET if x
             in mapfilter])

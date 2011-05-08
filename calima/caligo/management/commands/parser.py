@@ -124,7 +124,7 @@ class Calima(object):
 
 
 # TODO Dar valor a Acum si queremos que quede reflejado db
-ESPECIALES = {'Ip': 'Ip', 'Acum': None, 'Varias': None, '': None}
+ESPECIALES = {'Ip': 0, 'Acum': None, 'Varias': None, '': None}
 
 def exceptionEspeciales(f):
     def new_f(value):

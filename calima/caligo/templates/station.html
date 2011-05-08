@@ -21,11 +21,6 @@
 </p>
 </div>
 
-<h2>Por años</h2>
-{% for year in years %}
-    <a href="?year={{ year.year }}">{{ year.year }}</a>
-{% endfor %}
-
 <h2>Lo más</h2>
 <a href="/caligo/stations/{{ station.code }}/temperatura/maximo">Temperaturas maximas</a>
 <a href="/caligo/stations/{{ station.code }}/temperatura/minimo">Temperaturas minimas</a>
