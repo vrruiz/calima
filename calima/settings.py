@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from os import path
+    
 
 BASEDIR = path.dirname(path.abspath(__file__))
 
@@ -24,6 +25,16 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+
+# Celery config
+import djcelery
+djcelery.setup_loader()
+BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
+
+# DATOS. Where save the data 
+BASEDIR_DATA = path.join(BASEDIR, '../data/datos')
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -119,6 +130,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'djkombu',
+    'djcelery',
     'caligo',
 )
 

@@ -5,9 +5,11 @@ Para instalar calima son necesarios los siguientes programas.
 
 1. Django 1.3
 
-2. django-piston
+2. Dependencias: django-piston django-celery django-kombu
 
   $ easy_install django-piston
+  $ easy_install django-celery
+  $ easy_install django-kombu
 
 3. MySQL
 
@@ -16,9 +18,19 @@ Para instalar calima son necesarios los siguientes programas.
         DEFAULT COLLATE utf8_general_ci;
   > GRANT ALL PRIVILEGES ON calima.* TO 'calima'@localhost IDENTIFIED BY 'calima';
 
+4. Inicializar la base de datos con django. En el directorio calima
+    
+  $ python manage.py syncdb
 
-4. Descarga de datos
+5. Descarga de datos
 
   $ cd /data
   $ ./01-download.py
   $ ./02-import.sh
+
+6. Ejecutar la aplicacion
+  $ python calima/manage.py runserver
+
+  Para que se la db se mantenga actualizada hay que ejecutar celery para las tareas.
+
+  $ python calima/manage.py celeryd -B
