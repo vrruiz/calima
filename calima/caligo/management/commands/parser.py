@@ -8,7 +8,7 @@ import sys, os, datetime
 import re, glob, gzip, csv
 from decimal import Decimal, InvalidOperation
 
-FTP=''
+FTP_URL = 'ftpdatos.aemet.es'
 
 import logging
 logger = logging.getLogger('calima')
@@ -16,7 +16,7 @@ hdlr = logging.FileHandler('error.log')
 logger.addHandler(hdlr) 
 
 class Calima(object):
-    def __init__(self, ftp=FTP, path='./'):
+    def __init__(self, ftp=FTP_URL, path='./'):
         """
             Genera la estructura Estaciones desde el directorio  datos
             descargados
@@ -96,6 +96,31 @@ class Calima(object):
         else:
             for year in year:
                 self._importarAnual(year)
+
+    def actualizar(self):
+        """ 
+            Descarga el fichero para el ultimo anho y maestro.csv en path
+            parsear los datos
+        """
+        ano = datetime.datetime.today().year
+        f = "%d.CSV.gz" % ano
+        # Inicia sesión FTP
+        ftp = FTP(self.ftp)
+        ftp.login()
+        # Ir a series climatológicas
+        ftp.cwd('series_climatologicas')
+        ftp.retrbinary('RETR maestro.csv', open(os.path.join(self.path, 'maestro.csv'), 'wb').write)
+        ftp.cwd('valores_diarios')
+        ftp.cwd('anual')
+        try:
+            ftp.retrbinary('RETR ' + f, open(os.path.join(self.path, f), 'wb').write)
+        except:
+            os.remove(f)
+
+        ftp.quit()
+        
+        # Parsear los datos
+        self._importarAnual(ano)
 
 
 # TODO Dar valor a Acum si queremos que quede reflejado db
@@ -180,6 +205,7 @@ class Estacion(object):
 if __name__ == "__main__":
     calima = Calima(path='../../../../data/datos/')
     calima.generarEstaciones()
+    calima.actualizar()
     #print calima.estaciones.keys()
     #print "Numero estaciones ", len(calima.estaciones)
     #calima.generarDatosAnual([2009,2010])
