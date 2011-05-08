@@ -1,0 +1,14 @@
+{% extends 'calima_index.html' %}
+
+{% block title %}Calima - Provincias{% endblock %}
+
+{% block content %}
+<h1>Provincias</h1>
+
+<ul>
+{% for province in provinces %}
+<li><a href="/province/{{ province.name }}">{{ province.name }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}
