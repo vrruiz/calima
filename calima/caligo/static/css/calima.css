@@ -6,3 +6,35 @@
 #header ul li a {
     color: #afeeee;
 }
+
+.questions {
+    font-family: Arial;
+    font-size: 200%;
+    font-weight: bold;
+}
+
+.question_image {
+    align: left;
+    margin: 5px;
+    vertical-align: middle;
+}
+
+.question_div {
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+}
+
+.welcome {
+    margin-top: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: 150%;
+    text-align: justify;
+}
+
+.welcome_graphic {
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+}

@@ -5,4 +5,35 @@
 {% block content %}
 <h1>Bienvenido a Calima</h1>
 
+<div class="question_div">
+<span class="questions">¡Un torrente de datos meteorológicos!</span>
+<img src="/static/images/icon-sun.png" width="100" height="100" class="question_image">
+</div>
+
+<div class="question_div">
+<img src="/static/images/icon-snow.png" width="119" height="100" class="question_image" style="align: left">
+<span class="questions">90 años de datos meteorológicos</span>
+</div>
+
+<div class="welcome">
+<p>Calima te ofrece los más de 90 años de datos meteorológicos de la Agencia
+Estatal de Meteorología de España (<a href="http://www.aemet.es/">AEMET</a>).</p>
+
+<p>Puedes consultar los datos sobre temperatura, precipitación, presión,
+viento y otros iformación de más de <a href="/caligo/stations/">100 estaciones meteorológicas</a>
+repartidas por la <a href="/caligo/provinces/">geografía española</a>.</p>
+</div>
+
+<div class="welcome_graphic">
+<a href="/caligo/stations/C649I/?year=2010"><img src="/static/images/image-graphic.png" alt="Estación LPGC - 2010" /></a>
+</div>
+
+<div class="welcome">
+<p>Además, si eres programador, tienes a tu disposición una <a href="">API remota</a>
+para consultar la serie de datos de la AEMET, que va desde los años 1920 hasta
+nuestros días.
+</p>
+</div>
+
+
 {% endblock %}
