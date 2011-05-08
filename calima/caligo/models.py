@@ -69,7 +69,6 @@ class DailyReport(models.Model):
     imp_prec = models.BooleanField(verbose_name=_(u'Imperceptible precipitation'))
     var_w_dir = models.BooleanField(verbose_name=_(u'Variable wind direction'))
 
-
 def station_importer(estaciones):
     """
         Imports the data from a dictionary of station objects as defined in

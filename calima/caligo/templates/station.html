@@ -25,6 +25,9 @@
 {% endfor %}
 
 {% for daily in data %}
-<p> {{ daily.date }} Tempmax: {{ daily.max_t }}</p>
+    <ul>
+        {% include "dailyreport.html" %}
+    </ul>
 {% endfor %}
+
 {% endblock %}
