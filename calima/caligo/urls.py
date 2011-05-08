@@ -7,4 +7,6 @@ urlpatterns = patterns('',
 
     url(r'^stations/(?P<stationId>\w+)', views.stations),
     url(r'^stations/', views.stations),
+
+    url(r'^api/', views.api),
 )

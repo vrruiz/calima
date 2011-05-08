@@ -66,3 +66,6 @@ def stations(request, stationId=None):
         Station.objects.all()})
 
 
+def api(request):
+    # View
+    return render_to_response('api.html')
