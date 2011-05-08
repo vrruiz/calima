@@ -67,5 +67,9 @@ def stations(request, stationId=None):
 
 
 def api(request):
-    # View
+    # API info page
     return render_to_response('api.html')
+
+def about(request):
+    # About info page
+    return render_to_response('about.html')

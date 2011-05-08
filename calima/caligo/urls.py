@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^stations/', views.stations),
 
     url(r'^api/', views.api),
+    url(r'^about/', views.about),
 )
