@@ -1,0 +1,37 @@
+POR HACER
+=========
+
+Descarga
+--------
+- Detección e importación de actualizaciones de nuevos datos.
+    - He hecho un pequenho script que descarga el fichero del anho y lo
+      actualiza. Usa celery, caligo/tasks.py.
+- Arreglar problema de hora -> Fixed, redondear a 23
+
+
+API
+---
+- Utilizar un nombre descriptivo para las estaciones (SLUG)
+
+Web
+---
+- Página principal
+- Sobre calima
+  - AEMET
+  - Serie climatológica
+- Abredatos
+- Estadísticas: Lo más
+  - Máxima temperatura
+  - Mínima temperatura
+  - Año más caluroso
+  - Año más frío
+  - Mayor precipitación
+  - Menor precipitación
+  - Año más húmedo
+  - Año más seco
+- Mapa de provincias
+  - Estaciones
+- Estaciones
+- Estación
+  - Serie climatológica
+  - Estadísticas: Lo más

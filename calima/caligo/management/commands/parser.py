@@ -1,11 +1,14 @@
+# -*- coding: utf-8 -*-
+##
+## calima - Procesador de datos en bruto a clases Python
+## 
+
 from ftplib import FTP
-import os, datetime
-import glob, gzip, csv
-import re
-import sys
+import sys, os, datetime
+import re, glob, gzip, csv
 from decimal import Decimal, InvalidOperation
 
-FTP=''
+FTP_URL = 'ftpdatos.aemet.es'
 
 import logging
 logger = logging.getLogger('calima')
@@ -13,7 +16,12 @@ hdlr = logging.FileHandler('error.log')
 logger.addHandler(hdlr) 
 
 class Calima(object):
-    def __init__(self, ftp=FTP, path='./'):
+    def __init__(self, ftp=FTP_URL, path='./'):
+        """
+            Genera la estructura Estaciones desde el directorio  datos
+            descargados
+
+        """
         self.ftp = ftp
         self.path = path
         self.estaciones = {}
@@ -36,7 +44,7 @@ class Calima(object):
             raise Exception("Identificacion de estacion invalido")
             return
 
-        # old: valores_diarios/estacion/
+        # XXX Funciona, pero usarmoe generarDatosAnual
         f = gzip.open(os.path.join(self.path, 'valores_diarios/estacion/%s.CSV.gz' % estacionId))
         self.estaciones[estacionId].cargarDiarios(csv.reader(f.readlines()[1:],
                 delimiter=';'))
@@ -56,6 +64,7 @@ class Calima(object):
         if not self.estaciones:
             self.generarEstaciones()
 
+        logger.info("Extrayendo datos de %d" % year)
         try:
             f = gzip.open(os.path.join(self.path, '%d.CSV.gz' % year))
         except:
@@ -67,9 +76,9 @@ class Calima(object):
         f.close()
 
     def generarDatosAnual(self, year=None):
-        """ Generar datos dado un anho (year)
+        """ Generar datos dado un ano (year)
 
-            year: integer o iterable, cargar valores para ese dia
+            year: integer o iterable de integers, cargar valores para ese dia
                 en caso de ser None, carga todos los valores para los 
                 ficheros datos
         """
@@ -77,7 +86,7 @@ class Calima(object):
             for file in glob.glob(os.path.join(self.path,'????.CSV.gz')):
                 year = re.search('(?P<year>\d\d\d\d).CSV.gz',
                         file).groupdict()['year']
-                self._importarAnual(year)
+                self._importarAnual(int(year))
             return
 
         try:
@@ -88,8 +97,33 @@ class Calima(object):
             for year in year:
                 self._importarAnual(year)
 
+    def actualizar(self):
+        """ 
+            Descarga el fichero para el ultimo anho y maestro.csv en path
+            parsear los datos
+        """
+        ano = datetime.datetime.today().year
+        f = "%d.CSV.gz" % ano
+        # Inicia sesión FTP
+        ftp = FTP(self.ftp)
+        ftp.login()
+        # Ir a series climatológicas
+        ftp.cwd('series_climatologicas')
+        ftp.retrbinary('RETR maestro.csv', open(os.path.join(self.path, 'maestro.csv'), 'wb').write)
+        ftp.cwd('valores_diarios')
+        ftp.cwd('anual')
+        try:
+            ftp.retrbinary('RETR ' + f, open(os.path.join(self.path, f), 'wb').write)
+        except:
+            os.remove(f)
 
-# TODO Dar valor a Acum
+        ftp.quit()
+        
+        # Parsear los datos
+        self._importarAnual(ano)
+
+
+# TODO Dar valor a Acum si queremos que quede reflejado db
 ESPECIALES = {'Ip': 'Ip', 'Acum': None, 'Varias': None, '': None}
 
 def exceptionEspeciales(f):
@@ -107,21 +141,49 @@ def exceptionEspeciales(f):
     new_f.__name__ = f.__name__
     return new_f
 
-    
+def floatES(d):
+    # faster than waiting for exception
+    if not d:
+        return ''
+    try:
+        return Decimal(d.replace(',','.'))
+    except InvalidOperation:
+        return ESPECIALES[d] 
+
+@exceptionEspeciales
+def hora_min(h):
+    if not h:
+        return ''
+    hora, minutos = h.split(':')
+    return datetime.time(int(hora), int(minutos))
+
+@exceptionEspeciales
+def hora(h):
+    if not h:
+        return ''
+    h_int = int(h)
+    return h_int>23 and datetime.time(23) or datetime.time(h_int)
+
+
+
 class Estacion(object):
     def __init__(self, id, nombre, provincia, altitud, latitud, longitud):
         self.id = id
         self.nombre = nombre
         self.provincia = provincia
         self.altitud = int(altitud)
+        # Introduce un punto decimal que no está en la documentación
+        # 410653N 012439W -> 41.0653 -1.2439
+        latitud = latitud[:2] + '.' + latitud[2:]
+        longitud = longitud[:2] + '.' + longitud[2:]
         if latitud[-1] == 'S':
-            self.latitud = -1 * int(latitud[:-1])
+            self.latitud = -1 * Decimal(latitud[:-1])
         else:
-            self.latitud = int(latitud[:-1])
+            self.latitud = Decimal(latitud[:-1])
         if longitud[-1] == 'W':
-            self.longitud = -1 * int(longitud[:-1])
+            self.longitud = -1 * Decimal(longitud[:-1])
         else:
-            self.longitud = int(longitud[:-1])
+            self.longitud = Decimal(longitud[:-1])
         self.valores = {}
 
     def __repr__(self):
@@ -131,19 +193,6 @@ class Estacion(object):
         pass
 
     def cargarParte(self, d):
-        @exceptionEspeciales
-        def floatES(d):
-            return Decimal(d.replace(',','.'))
-
-        @exceptionEspeciales
-        def hora_min(h):
-            hora, minutos = h.split(':')
-            return datetime.time(int(hora), int(minutos))
-
-        @exceptionEspeciales
-        def hora(h):
-            return datetime.time(int(h))
-
         fecha = datetime.date(int(d[4]),int(d[5]),int(d[6]))
         #for i in range(len(d)):
         #    print "%s : %s" % (i, d[i])
@@ -165,14 +214,16 @@ class Estacion(object):
             self.cargarParte(d)
 
 if __name__ == "__main__":
-    calima = Calima(path='datos/')
+    calima = Calima(path='../../../../data/datos/')
     calima.generarEstaciones()
-    print calima.estaciones.keys()
-    print "Numero estaciones ", len(calima.estaciones)
+    #calima.actualizar()
+    calima.generarDatosAnual([2010])
+    #print calima.estaciones.keys()
+    #print "Numero estaciones ", len(calima.estaciones)
     #calima.generarDatosAnual([2009,2010])
-    calima.generarDatosAnual(2009)
+    #calima.generarDatosAnual(2009)
     #calima.generarDatosAnual(2012)
     #print [calima.getEstacion(x).valores for x in calima.estaciones]
-    estacion = calima.estaciones['8500A']
-    print estacion.provincia
+    #estacion = calima.estaciones['8500A']
+    #print estacion.provincia
 

@@ -47,4 +47,10 @@ más próxima
 - Hora: Hora de la presión mínima, redondeada a la hora entera
 más próxima
 
+Scripts
+-------
 
+· 01-descarga.py - Accede a ftp.aemet.es de forma anónima y descarga
+los ficheros de la serie climatológica anual en el directorio /datos
+
+· cliente.py - Procesa los ficheros de AEMET.
