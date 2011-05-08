@@ -3,7 +3,32 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 
 from caligo.models import Province, Station, DailyReport
+from django.db.models import Avg, Max, Min, Count
 
+# I know, this should be a manager or something
+def max_temperature(queryset):
+    a = queryset.aggregate(Max('max_t'))
+    return queryset.filter(max_t=a['max_t__max'])
+
+def min_temperature(queryset):
+    a = queryset.aggregate(Min('min_t'))
+    return queryset.filter(min_t=a['min_t__min'])
+
+def max_squall(queryset):
+    a = queryset.aggregate(Max('squall')) 
+    return queryset.filter(squall=a['squall__max'])
+
+def min_squall(queryset):
+    a = queryset.aggregate(Min('squall')) 
+    return queryset.filter(squall=a['squall__min'])
+
+def max_precip(queryset):
+    a = queryset.aggregate(Max('precip')) 
+    return queryset.filter(precip=a['precip__max'])
+
+def min_precip(queryset):
+    a = queryset.aggregate(Min('precip')) 
+    return queryset.filter(precip=a['precip__min']).exclude(precip=None)
 
 def provinces(request, provinceId=None):
     # For specific province
@@ -31,7 +56,6 @@ def stations(request, stationId=None, filtro=None):
         ? month
     """
     if stationId:
-        print filtro
         try:
             obj = Station.objects.get(code=stationId)
         except Station.DoesNotExist:
@@ -40,8 +64,10 @@ def stations(request, stationId=None, filtro=None):
 
         # Keyword for filter ....
         # Get the parameters form the GEt and generates the filter
+        # keywords: year month day
         mapfilter = {'year': 'date__year',
-                     'month': 'date__month'}
+                     'month': 'date__month',
+                     'day': 'date__day'}
         a = dict([ (mapfilter[x] , request.GET.get(x)) for x in request.GET if x
             in mapfilter])
 
@@ -51,10 +77,17 @@ def stations(request, stationId=None, filtro=None):
         # Apply the filters
         data_filtered = data.filter(**a)
 
-        if filtro:
-            data_filtered = data_filtered.values_list('date', filtro)
-        # Data for the char, has to be converted
-        # Defina the data
+        # I know, this should be in a manager, but I didn't have time
+        if filtro == 'max_t':
+            data_filtered = max_temperature(data_filtered)
+        elif filtro == 'min_t':
+            data_filtered = min_temperature(data_filtered)
+        elif filtro == 'max_squall':
+            data_filtered = max_squall(data_filtered)
+        elif filtro == 'max_prec':
+            data_filtered =  max_precip(data_filtered)
+        elif filtro == 'min_prec':
+            data_filtered = min_precip(data_filtered)
 
         return render_to_response('station.html', 
                 {
@@ -63,7 +96,6 @@ def stations(request, stationId=None, filtro=None):
                     'years'   : data.dates('date', 'year'),
                     'months'  : data.dates('date', 'month'),
                     'parameters' : request.GET.urlencode(),
-                    'filtered' : filtro != None,
                     })
 
     # General view
