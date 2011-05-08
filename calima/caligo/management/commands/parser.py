@@ -144,7 +144,7 @@ def exceptionEspeciales(f):
 def floatES(d):
     # faster than waiting for exception
     if not d:
-        return ''
+        return  None
     try:
         return Decimal(d.replace(',','.'))
     except InvalidOperation:
@@ -153,14 +153,14 @@ def floatES(d):
 @exceptionEspeciales
 def hora_min(h):
     if not h:
-        return ''
+        return None 
     hora, minutos = h.split(':')
     return datetime.time(int(hora), int(minutos))
 
 @exceptionEspeciales
 def hora(h):
     if not h:
-        return ''
+        return None 
     h_int = int(h)
     return h_int>23 and datetime.time(23) or datetime.time(h_int)
 
