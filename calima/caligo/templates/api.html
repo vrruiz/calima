@@ -7,13 +7,78 @@
 
 <p>Acceso remoto a los datos vía interfaz JSON.</p>
 
+<h2>Provincias</h2>
+<h3>Lista de provincias</h3>
+<p>Llamada <a href="/api/provincia/">api/provincia/</a></p>
+<p>Ejemplo de salida</p>
+<pre><code>
+[
+    {
+        "name": "HUELVA"
+    }, 
+    {
+        "name": "CASTELLON"
+    }, 
+]
+</code></pre>
+
+<h3>Estaciones meteorológicas por provincia</h3>
+<p>Llamada <a href="/api/provincia/HUELVA">api/provincia/&lt;código provincia&gt;</a></p>
+<p>Ejemplo de salida</p>
+<pre><code>
+</code></pre>
+
 <h2>Estaciones</h2>
 
 <h3>Lista de estaciones meteorológicas</h3>
-<p><tt>api/stations/</tt></p>
+<p>Llamada <a href="/api/estacion/">api/estacion/</a></p>
+<p>Ejemplo de salida</p>
+<pre><code>
+[
+    {
+        "province": {
+            "name": "HUELVA"
+        }, 
+        "code": "4642E", 
+        "name": "HUELVA", 
+        "altitude": 19, 
+        "longitude": -6.5434999999999999, 
+        "syn_code": null, 
+        "latitude": 37.1648
+    }, 
+    {
+        "province": {
+            "name": "CASTELLON"
+        }, 
+        "code": "8500A", 
+        "name": "CASTELLÓN", 
+        "altitude": 35, 
+        "longitude": -0.041700000000000001, 
+        "syn_code": null, 
+        "latitude": 39.57
+    },
+]
+</code></pre>
 
 <h3>Datos de una estación</h3>
-<p><tt>api/station/&lt;código de la estación&gt;/</p>
+<p>Llamada: <a href="/api/estacion/4642E">api/station/&lt;código de la estación&gt;/</a></p>
+<p>Ejemplo de salida</p>
+<pre><code>
+{
+    "province": {
+        "name": "HUELVA"
+    }, 
+    "code": "4642E", 
+    "name": "HUELVA", 
+    "altitude": 19, 
+    "longitude": -6.5434999999999999, 
+    "syn_code": null, 
+    "latitude": 37.1648
+}
+</code></pre>
+
+<h3>Serie temporal de datos de una estación</h3>
+<p>Llamada: <a href="/api/estacion/4642E/serie/">api/estacion/&lt;código de la estación&gt;/serie/</a></p>
 
 <h2>Provincias</h2>
 

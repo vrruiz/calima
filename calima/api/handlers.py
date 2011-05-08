@@ -15,6 +15,15 @@ class ProvinceHandler(BaseHandler):
             return base.all()
 
 
+class ProvinceStationHandler(BaseHandler):
+   allowed_methods = ('GET',)
+   model = Station  
+
+   def read(self, request, province_name):
+        base = Station.objects
+        return base.filter(province__name=province_name)
+
+
 class StationHandler(BaseHandler):
    allowed_methods = ('GET',)
    model = Station  
