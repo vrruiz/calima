@@ -4,7 +4,17 @@
 
 {% block content %}
 <h1>Estacion: {{ station.code }} {{ station.name }}</h1>
+  <script type="text/javascript" charset="utf-8"> 
+            window.onload = function () {
+                var r = Raphael("holder");
+                r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
+                
+                r.g.text(100, 10, "Temperatura maxima");
 
+                r.g.barchart(10, 10, 300, 220, {{ data_t_max}}, 0, {type: "sharp"});
+            };
+        </script> 
+<div id="holder"></div>
 <h2>Filtra por anho</h2>
 {% for year in years %}
     <a href="?year={{ year.year }}">{{ year.year }}</a>
