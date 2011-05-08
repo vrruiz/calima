@@ -11,7 +11,9 @@ Para instalar calima son necesarios los siguientes programas.
 
 3. MySQL
 
-  > CREATE DATABASE calima;
+  > CREATE DATABASE calima charset utf8
+        DEFAULT CHARACTER SET utf8
+        DEFAULT COLLATE utf8_general_ci;
   > GRANT ALL PRIVILEGES ON calima.* TO 'calima'@localhost IDENTIFIED BY 'calima';
 
 
