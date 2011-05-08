@@ -7,9 +7,9 @@ Para instalar calima son necesarios los siguientes programas.
 
 2. Dependencias: django-piston django-celery django-kombu
 
-  $ easy_install django-piston
-  $ easy_install django-celery
-  $ easy_install django-kombu
+  $ easy_install django-piston (o pip install django-piston)
+  $ easy_install django-celery (o pip install django-celery)
+  $ easy_install django-kombu (o pip install django-kombu)
 
 3. MySQL
 
