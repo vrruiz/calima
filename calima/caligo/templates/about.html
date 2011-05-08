@@ -5,10 +5,33 @@
 {% block content %}
 <h1>Sobre Calima</h1>
 
+<p>Calima es un proyecto para el acceso a los datos históricos de la
+AEMET. La Agencia Española de Meteorología (AEMET) dispone de una
+serie con los datos meteorológicos desde los años 1920 hasta nuestros
+días. calima permite consultar estos datos a través de un API y
+mediante web.</p>
+
+<p>Este web participa en el concurso <a href="http://www.abredatos.es/">Abre Datos 2011</a>
+como el equipo #T65. Los componentes del grupo son:</p>
+
+<ul>
+<li><a href="http://twitter.com/vrruiz">Víctor R. Ruiz</a></li>
+<li><a href="http://twitter.com/Vibragiel">Gabriel Rodríguez Alberich</a></li>
+<li><a href="http://twitter.com/faraox">Carlos Mestre</a></li>
+</ul>
+
+<p>El código fuente del sitio es software libre y se encuentra en
+<a href="github.com/vrruiz/calima">github.com/vrruiz/calima</a>.</p>
 
 <h1>Serie climatológica de la AEMET</h1>
 
-La obtención y elaboración de la información meteorológica,  consecuencia de la
+<p>La fuente de datos es AEMET. En
+<a href="ftp://ftp.aemet.es/series_climatologicas/valores_diarios/anual/">ftp://ftp.aemet.es/series_climatologicas/valores_diarios/anual/</a>
+se encuentran los ficheros. Cada uno de ellos representa un año.
+El formato es de valores separados por puntos y comas (;), que
+representa una obtención de datos en una estación meteorológica.</p>
+
+<blockquote>La obtención y elaboración de la información meteorológica,  consecuencia de la
 actividad científica y técnica desarrollada por la <a href="http://www.aemet.es/">Agencia
 Estatal de Meteorología</a> (AEMET), acorde con el progreso  científico y tecnológico,
 constituyen una modalidad de la propiedad  intelectual regulada en su artículo
@@ -31,6 +54,6 @@ disposición de los ciudadanos en este servidor.
 
 AEMET no garantiza la presentación de la totalidad de los datos de  forma
 continua en el servidor, así mismo se reserva el derecho a  modificar, añadir o
-eliminar la información contenida en este servidor.
+eliminar la información contenida en este servidor.<blockquote>
 
 {% endblock %}

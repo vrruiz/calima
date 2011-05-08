@@ -47,7 +47,7 @@ def provinces(request, provinceId=None):
 
     # General view
     return render_to_response('province_list.html', {'provinces':
-        Province.objects.all()})
+        Province.objects.all().order_by('name')})
 
 def stations(request, stationId=None, filtro=None):
     from datetime import datetime
@@ -100,7 +100,7 @@ def stations(request, stationId=None, filtro=None):
 
     # General view
     return render_to_response('station_list.html', {'stations':
-        Station.objects.all()})
+        Station.objects.all().order_by('name')})
 
 
 def api(request):
