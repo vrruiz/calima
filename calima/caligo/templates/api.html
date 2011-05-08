@@ -1,0 +1,67 @@
+{% extends 'calima_index.html' %}
+
+{% block title %}Calima - Documentación de la API{% endblock %}
+
+{% block content %}
+<h1>API</h1>
+
+<p>Acceso remoto a los datos vía interfaz JSON.</p>
+
+<h2>Estaciones</h2>
+
+<h3>Lista de estaciones meteorológicas</h3>
+<p><tt>api/stations/</tt></p>
+
+<h3>Datos de una estación</h3>
+<p><tt>api/station/&lt;código de la estación&gt;/</p>
+
+<h2>Provincias</h2>
+
+<h3>Lista de las provincias</h3>
+<p>Llamada: <a href="/api/provinces/">/api/provinces/</a></p>
+<p>Ejemplo de salida</p>
+<pre><code>
+[
+    {
+        "province": {
+            "name": "HUELVA"
+        }, 
+        "code": "4642E", 
+        "name": "HUELVA", 
+        "altitude": 19, 
+        "longitude": -6.5434999999999999, 
+        "syn_code": null, 
+        "latitude": 37.1648
+    }, 
+    {
+        "province": {
+            "name": "CASTELLON"
+        }, 
+        "code": "8500A", 
+        "name": "CASTELLÓN", 
+        "altitude": 35, 
+        "longitude": -0.041700000000000001, 
+        "syn_code": null, 
+        "latitude": 39.57
+    },
+]
+</code></pre>
+
+<h3>Estaciones de una provincia</h3>
+<p>Llamada: <a href="/api/province/">api/province/&lt;nombre de la provincia&gt;/</a></p>
+<p>Ejemplo de salida</p>
+<pre><code>
+[{
+    "province": {
+        "name": "HUELVA"
+    }, 
+    "code": "4642E", 
+    "name": "HUELVA", 
+    "altitude": 19, 
+    "longitude": -6.5434999999999999, 
+    "syn_code": null, 
+    "latitude": 37.1648
+}]
+</code></pre>
+
+{% endblock %}

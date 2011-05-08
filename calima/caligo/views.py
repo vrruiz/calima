@@ -71,3 +71,14 @@ def stations(request, stationId=None, filtro=None):
         Station.objects.all()})
 
 
+def api(request):
+    # API info page
+    return render_to_response('api.html')
+
+def about(request):
+    # About info page
+    return render_to_response('about.html')
+
+def index_html(request):
+    # index page
+    return render_to_response('index.html')
