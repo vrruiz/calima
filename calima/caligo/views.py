@@ -111,6 +111,9 @@ def stations(request, stationId=None, filtro=None):
     return render_to_response('station_list.html', {'stations':
         Station.objects.all().order_by('name')})
 
+def stats(request):
+    # Stats info page
+    return render_to_response('stats.html')
 
 def api(request):
     # API info page
