@@ -43,7 +43,7 @@ class InfoGraphic():
             hemisphere = 'N'
             if (station.latitude < 0):
                 hemisphere = 'S'
-            return "(%+1.0f%s) %s" % (station.latitude, hemisphere, station.name)
+            return "%s (%+1.0f%s, %i m)" % (station.name, station.latitude, hemisphere, station.altitude)
 
                     
         # Number of stations
@@ -73,8 +73,18 @@ class InfoGraphic():
         p_x = (size_x - font_size[0]) / 2
         p_y = 0
         draw.text((p_x, p_y), title, fill="Black")
+        background_switch = True
         # Draw station names
         for station in stations:
+            # Draw background
+            color = (230,230,230) 
+            if (background_switch == False):
+           	    color = "White"
+            background_switch = not background_switch
+            p_y = margin_y + station_pos[station.name]
+            p_x = 0
+            draw.rectangle([p_x, p_y, margin_x - 1, p_y + PIX_SIZE - 1], fill=color)
+            # Draw text
             font_size = font.getsize(station_title(station))
             p_x = margin_x - font_size[0] - int(MARGIN_FONT / 2)
             p_y = margin_y + station_pos[station.name] + int((PIX_SIZE - font_size[1]) / 2)
