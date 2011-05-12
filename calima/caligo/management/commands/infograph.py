@@ -158,12 +158,136 @@ class InfoGraphic():
         daily_reports = DailyReport.objects.filter(date__year=year).order_by('date').filter(avg_t__isnull=False)
         self.generate_by_year(stations, daily_reports, year)
 
+    def generate_by_station(self, daily_reports, station, year_min, year_max):
+        """ Generates an infographic image showing temperature """
+        # Number of years
+        years_num = year_max - year_min + 1
+        year_pos = dict()
+        # Generate a dictionary with stations' row positions
+        margin_x = 0
+        margin_y = PIX_SIZE * 2
+        pos_y = 0
+        font = ImageFont.truetype(FONT, FONT_SIZE)
+        for year in range(year_min, year_max + 1):
+            font_size = font.getsize(str(year))
+            if (font_size[0] > margin_x):
+                margin_x = font_size[0]
+            year_pos[year] = pos_y
+            pos_y = pos_y + PIX_SIZE
+        # Create image
+        margin_x = margin_x + MARGIN_FONT
+        size_x = margin_x + 368 * PIX_SIZE
+        size_y = (len(year_pos) + 3) * PIX_SIZE + margin_y
+        im = Image.new("RGB", (size_x, size_y), "White")
+        draw = ImageDraw.Draw(im)
+        draw.setfont(font)
+        # Draw title
+        title = "Mapa de temperaturas - %s - Datos AEMET - calima.linotipo.es" % (station.name)
+        font_size = font.getsize(title)
+        p_x = (size_x - font_size[0]) / 2
+        p_y = 0
+        draw.text((p_x, p_y), title, fill="Black")
+        background_switch = True
+        # Draw years
+        for year in year_pos.keys():
+            """
+            # Draw background
+            color = (230,230,230) 
+            if (background_switch == False):
+           	    color = "White"
+            background_switch = not background_switch
+            p_y = margin_y + year_pos[year]
+            p_x = 0
+            draw.rectangle([p_x, p_y, margin_x - 1, p_y + PIX_SIZE - 1], fill=color)
+            """
+            # Draw text left
+            font_size = font.getsize(str(year))
+            p_x = margin_x - font_size[0] - int(MARGIN_FONT / 2)
+            p_y = margin_y + year_pos[year] + int((PIX_SIZE - font_size[1]) / 2)
+            draw.text((p_x, p_y), str(year), fill="Black")
+            # Draw text right
+            p_x = margin_x + PIX_SIZE * 365 + int(MARGIN_FONT /2)
+            draw.text((p_x, p_y), str(year), fill="Black")
+        # Draw temperature palette
+        i = 0
+        for temperature in range(TEMP_MIN, TEMP_MAX + 1):
+            p_x = margin_x + i * PIX_SIZE
+            p_y = margin_y + (years_num + 1) * PIX_SIZE
+            color_index = 255 - int(float(temperature + abs(TEMP_MIN)) * COLOR_WEIGHT)
+            color = scheme[color_index]
+            # Draw rectangle
+            draw.rectangle([p_x, p_y, p_x + PIX_SIZE - 1, p_y + PIX_SIZE - 1], fill=color)
+            # Draw text
+            font_size = font.getsize(str(temperature))
+            p_x = p_x + int((PIX_SIZE - font_size[0]) / 2)
+            draw.text((p_x, p_y), str(temperature), fill="White")
+            i = i + 1
+        # Draw temperatures
+        for report in daily_reports:
+            day_of_year = int(report.date.strftime('%j'))
+            p_x = margin_x + (day_of_year - 1) * PIX_SIZE
+            p_y = margin_y + year_pos[report.date.year]
+            # Calculate color palette index
+            color_index = 255 - int(float(report.avg_t + abs(TEMP_MIN)) * COLOR_WEIGHT)
+            if color_index < 0:
+                color_index = 0
+            elif color_index > 255:
+                color_index = 255
+            color = scheme[color_index]
+            # Draw rectangle
+            draw.rectangle([p_x, p_y, p_x + PIX_SIZE - 1, p_y + PIX_SIZE - 1], fill=color)
+        # Draw months
+        year_is_leap = calendar.isleap(year)
+        days = 0
+        for month in range(len(MONTHS)):
+            # Month name
+            (month_name, month_days) = MONTHS[month]
+            font_size = font.getsize(month_name)
+            p_x = margin_x + PIX_SIZE * days + int((PIX_SIZE * month_days - font_size[0]) / 2)
+            p_y = PIX_SIZE
+            draw.text((p_x, p_y), month_name, fill="Black")
+            # Days
+            days = days + MONTHS[month][1]
+            # Leap year, add a day to the calendar
+            if (month == 2 and year_is_leap):
+            	days = days + 1
+            # Draw month limit (finish)
+            if (month < 11):
+                p_x = margin_x + PIX_SIZE * days
+                p_y = PIX_SIZE * 2
+                draw.line((p_x, p_y, p_x, p_y + PIX_SIZE * years_num), fill="Black")
+        # Draw logo
+        if (LOGO_IMAGE):
+            logo = Image.open(LOGO_IMAGE)
+            logo_size = 200
+            logo.thumbnail((logo_size, logo_size), Image.NEAREST or Image.ANTIALIAS)
+            p_x = size_x - logo.size[0]
+            p_y = size_y - logo.size[1]
+            im.paste(logo, (p_x, p_y, p_x + logo.size[0], p_y + logo.size[1]))
+        del draw
+        im.save(self.filename, "PNG")
+        
+    def image_by_station(self, station_code):
+        """ Generate infographic by station """
+        # Stations, ordered by latitude and longitude
+        station = Station.objects.get(code=station_code)
+        # Daily reports, ordered by date
+        daily_reports = DailyReport.objects.filter(station=station).order_by('date').filter(avg_t__isnull=False)
+        year_min = DailyReports.objects.aggregate(date_min=Min('date'))['date_min'].year
+        year_max = DailyReports.objects.aggregate(date_max=Max('date'))['date_max'].year
+        self.generate_by_station(daily_reports, station, year_min, year_max)
+
 class Command(BaseCommand):
-    args = '<fichero.png> <año>'
+    args = '<fichero.png> [--year <año>] | [--station <código>]'
     help = 'Genera un gráfico de información con el histórico de datos'
 
     def handle(self, *args, **options):
         image = args[0]
-        year = int(args[1])
-        graph = InfoGraphic(image)
-        graph.image_by_year(year)
+        if (args[1] == '--year')
+        	year = int(args[1])
+        	graph = InfoGraphic(image)
+        	graph.image_by_year(year)
+        elif (args[1] == '--station')
+        	station = args[1]
+        	graph.image_by_station(station)
+
