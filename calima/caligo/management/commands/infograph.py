@@ -19,7 +19,7 @@ from django.db import connection
 PIX_SIZE = 25
 TEMP_MIN = -15
 TEMP_MAX = 45
-COLOR_WEIGHT = 256.0 / (TEMP_MAX + abs(TEMP_MIN) + 1)
+COLOR_WEIGHT = 256.0 / (TEMP_MAX - TEMP_MIN + 1)
 FONT = '/Library/Fonts/Arial.ttf' # TODO: Find font path
 FONT_SIZE = 20
 FONT_SIZE_SMALL = 10
@@ -97,7 +97,7 @@ class InfoGraphic():
         for temperature in range(TEMP_MIN, TEMP_MAX + 1):
             p_x = margin_x + i * PIX_SIZE
             p_y = margin_y + (stations_num + 1) * PIX_SIZE
-            color_index = 255 - int(float(temperature + abs(TEMP_MIN)) * COLOR_WEIGHT)
+            color_index = 255 - int(float(temperature - TEMP_MIN) * COLOR_WEIGHT)
             color = scheme[color_index]
             # Draw rectangle
             draw.rectangle([p_x, p_y, p_x + PIX_SIZE - 1, p_y + PIX_SIZE - 1], fill=color)
@@ -112,7 +112,7 @@ class InfoGraphic():
             p_x = margin_x + (day_of_year - 1) * PIX_SIZE
             p_y = margin_y + station_pos[report.station.code]
             # Calculate color palette index
-            color_index = 255 - int(float(report.avg_t + abs(TEMP_MIN)) * COLOR_WEIGHT)
+            color_index = 255 - int(float(report.avg_t - TEMP_MIN) * COLOR_WEIGHT)
             if color_index < 0:
                 color_index = 0
             elif color_index > 255:
@@ -229,7 +229,7 @@ class InfoGraphic():
         for temperature in range(TEMP_MIN, TEMP_MAX + 1):
             p_x = margin_x + i * PIX_SIZE
             p_y = margin_y + (stations_num + 1) * PIX_SIZE
-            color_index = 255 - int(float(temperature + abs(TEMP_MIN)) * COLOR_WEIGHT)
+            color_index = 255 - int(float(temperature - TEMP_MIN) * COLOR_WEIGHT)
             color = scheme[color_index]
             # Draw rectangle
             draw.rectangle([p_x, p_y, p_x + PIX_SIZE - 1, p_y + PIX_SIZE - 1], fill=color)
@@ -243,7 +243,7 @@ class InfoGraphic():
             print station
             for year in range(year_min, year_max + 1):
                 count = DailyReport.objects.filter(station=station, date__year=year, avg_t__isnull=False).aggregate(count=Count('avg_t'))['count']
-                if (count < 330):
+                if (count < 300):
                     continue
                 avg = DailyReport.objects.filter(station=station, date__year=year, avg_t__isnull=False).aggregate(avg=Avg('avg_t'))['avg']
                 if (not avg):
@@ -253,7 +253,7 @@ class InfoGraphic():
                 p_x = margin_x + (year - year_min) * PIX_SIZE
                 p_y = margin_y + station_pos[station.code]
                 # Calculate color palette index
-                color_index = 255 - int(float(average + abs(TEMP_MIN)) * COLOR_WEIGHT)
+                color_index = 255 - int(float(average - TEMP_MIN) * COLOR_WEIGHT)
                 if color_index < 0:
                     color_index = 0
                 elif color_index > 255:
@@ -276,8 +276,6 @@ class InfoGraphic():
         """ Generate infographic by year """
         # Stations, ordered by latitude and longitude
         stations = Station.objects.all().order_by('-latitude', 'latitude')
-        # Daily reports, ordered by date
-        # daily_reports = DailyReport.objects.order_by('station', 'date').filter(avg_t__isnull=False)
         year_min = DailyReport.objects.aggregate(date_min=Min('date'))['date_min'].year
         year_max = DailyReport.objects.aggregate(date_max=Max('date'))['date_max'].year
         self.generate_by_average(stations, year_min, year_max)
@@ -337,7 +335,7 @@ class InfoGraphic():
         for temperature in range(TEMP_MIN, TEMP_MAX + 1):
             p_x = margin_x + i * PIX_SIZE
             p_y = margin_y + (years_num + 1) * PIX_SIZE
-            color_index = 255 - int(float(temperature + abs(TEMP_MIN)) * COLOR_WEIGHT)
+            color_index = 255 - int(float(temperature - TEMP_MIN) * COLOR_WEIGHT)
             color = scheme[color_index]
             # Draw rectangle
             draw.rectangle([p_x, p_y, p_x + PIX_SIZE - 1, p_y + PIX_SIZE - 1], fill=color)
@@ -352,7 +350,7 @@ class InfoGraphic():
             p_x = margin_x + (day_of_year - 1) * PIX_SIZE
             p_y = margin_y + year_pos[report.date.year]
             # Calculate color palette index
-            color_index = 255 - int(float(report.avg_t + abs(TEMP_MIN)) * COLOR_WEIGHT)
+            color_index = 255 - int(float(report.avg_t - TEMP_MIN) * COLOR_WEIGHT)
             if color_index < 0:
                 color_index = 0
             elif color_index > 255:
